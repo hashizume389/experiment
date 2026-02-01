@@ -1,0 +1,33 @@
+[1.966s] Invoking command in '/home/hashizume/experiment/src/rotate_odom': PYTHONPATH=/home/hashizume/experiment/build/rotate_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages: /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_odom build --build-base /home/hashizume/experiment/build/rotate_odom/build install --record /home/hashizume/experiment/build/rotate_odom/install.log --single-version-externally-managed install_data
+[2.183s] running egg_info
+[2.183s] creating ../../build/rotate_odom/rotate_odom.egg-info
+[2.183s] writing ../../build/rotate_odom/rotate_odom.egg-info/PKG-INFO
+[2.184s] writing dependency_links to ../../build/rotate_odom/rotate_odom.egg-info/dependency_links.txt
+[2.185s] writing entry points to ../../build/rotate_odom/rotate_odom.egg-info/entry_points.txt
+[2.185s] writing requirements to ../../build/rotate_odom/rotate_odom.egg-info/requires.txt
+[2.185s] writing top-level names to ../../build/rotate_odom/rotate_odom.egg-info/top_level.txt
+[2.185s] writing manifest file '../../build/rotate_odom/rotate_odom.egg-info/SOURCES.txt'
+[2.187s] reading manifest file '../../build/rotate_odom/rotate_odom.egg-info/SOURCES.txt'
+[2.188s] writing manifest file '../../build/rotate_odom/rotate_odom.egg-info/SOURCES.txt'
+[2.188s] running build
+[2.188s] running build_py
+[2.188s] creating /home/hashizume/experiment/build/rotate_odom/build
+[2.188s] creating /home/hashizume/experiment/build/rotate_odom/build/lib
+[2.188s] creating /home/hashizume/experiment/build/rotate_odom/build/lib/rotate_odom
+[2.188s] copying rotate_odom/__init__.py -> /home/hashizume/experiment/build/rotate_odom/build/lib/rotate_odom
+[2.188s] running install
+[2.188s] running install_lib
+[2.189s] creating /home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages/rotate_odom
+[2.189s] copying /home/hashizume/experiment/build/rotate_odom/build/lib/rotate_odom/__init__.py -> /home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages/rotate_odom
+[2.189s] byte-compiling /home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages/rotate_odom/__init__.py to __init__.cpython-310.pyc
+[2.189s] running install_data
+[2.189s] creating /home/hashizume/experiment/install/rotate_odom/share/ament_index
+[2.189s] creating /home/hashizume/experiment/install/rotate_odom/share/ament_index/resource_index
+[2.189s] creating /home/hashizume/experiment/install/rotate_odom/share/ament_index/resource_index/packages
+[2.189s] copying resource/rotate_odom -> /home/hashizume/experiment/install/rotate_odom/share/ament_index/resource_index/packages
+[2.190s] copying package.xml -> /home/hashizume/experiment/install/rotate_odom/share/rotate_odom
+[2.190s] running install_egg_info
+[2.191s] Copying ../../build/rotate_odom/rotate_odom.egg-info to /home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages/rotate_odom-0.0.0-py3.10.egg-info
+[2.191s] running install_scripts
+[2.212s] writing list of installed files to '/home/hashizume/experiment/build/rotate_odom/install.log'
+[2.299s] Invoked command in '/home/hashizume/experiment/src/rotate_odom' returned '0': PYTHONPATH=/home/hashizume/experiment/build/rotate_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages: /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_odom build --build-base /home/hashizume/experiment/build/rotate_odom/build install --record /home/hashizume/experiment/build/rotate_odom/install.log --single-version-externally-managed install_data

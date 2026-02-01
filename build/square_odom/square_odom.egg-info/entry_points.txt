@@ -1,0 +1,3 @@
+[console_scripts]
+square_odom = square_odom.square_odom:main
+

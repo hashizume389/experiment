@@ -1,0 +1,3 @@
+[console_scripts]
+rotate_odom = rotate_odom.rotate_odom:main
+

@@ -1,0 +1,16 @@
+package.xml
+setup.cfg
+setup.py
+../../build/forward_vs/forward_vs.egg-info/PKG-INFO
+../../build/forward_vs/forward_vs.egg-info/SOURCES.txt
+../../build/forward_vs/forward_vs.egg-info/dependency_links.txt
+../../build/forward_vs/forward_vs.egg-info/entry_points.txt
+../../build/forward_vs/forward_vs.egg-info/requires.txt
+../../build/forward_vs/forward_vs.egg-info/top_level.txt
+../../build/forward_vs/forward_vs.egg-info/zip-safe
+forward_vs/__init__.py
+forward_vs/forward_vs.py
+resource/forward_vs
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

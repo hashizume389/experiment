@@ -1,0 +1,5 @@
+  File "/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs/square_vs.py", line 151
+    diff_yaw = self.current_yaw_ -
+                                  ^
+SyntaxError: invalid syntax
+

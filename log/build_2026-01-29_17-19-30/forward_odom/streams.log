@@ -1,0 +1,36 @@
+[2.014s] Invoking command in '/home/hashizume/experiment/src/forward_odom': PYTHONPATH=/home/hashizume/experiment/build/forward_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages: /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_odom build --build-base /home/hashizume/experiment/build/forward_odom/build install --record /home/hashizume/experiment/build/forward_odom/install.log --single-version-externally-managed install_data
+[2.200s] running egg_info
+[2.201s] creating ../../build/forward_odom/forward_odom.egg-info
+[2.201s] writing ../../build/forward_odom/forward_odom.egg-info/PKG-INFO
+[2.201s] writing dependency_links to ../../build/forward_odom/forward_odom.egg-info/dependency_links.txt
+[2.201s] writing entry points to ../../build/forward_odom/forward_odom.egg-info/entry_points.txt
+[2.202s] writing requirements to ../../build/forward_odom/forward_odom.egg-info/requires.txt
+[2.202s] writing top-level names to ../../build/forward_odom/forward_odom.egg-info/top_level.txt
+[2.202s] writing manifest file '../../build/forward_odom/forward_odom.egg-info/SOURCES.txt'
+[2.203s] reading manifest file '../../build/forward_odom/forward_odom.egg-info/SOURCES.txt'
+[2.204s] writing manifest file '../../build/forward_odom/forward_odom.egg-info/SOURCES.txt'
+[2.204s] running build
+[2.204s] running build_py
+[2.204s] creating /home/hashizume/experiment/build/forward_odom/build
+[2.205s] creating /home/hashizume/experiment/build/forward_odom/build/lib
+[2.205s] creating /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom
+[2.205s] copying forward_odom/__init__.py -> /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom
+[2.205s] copying forward_odom/forward_odom.py -> /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom
+[2.205s] running install
+[2.205s] running install_lib
+[2.206s] creating /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom
+[2.206s] copying /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom/__init__.py -> /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom
+[2.206s] copying /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom/forward_odom.py -> /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom
+[2.207s] byte-compiling /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom/__init__.py to __init__.cpython-310.pyc
+[2.207s] byte-compiling /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom/forward_odom.py to forward_odom.cpython-310.pyc
+[2.208s] running install_data
+[2.208s] creating /home/hashizume/experiment/install/forward_odom/share/ament_index
+[2.208s] creating /home/hashizume/experiment/install/forward_odom/share/ament_index/resource_index
+[2.208s] creating /home/hashizume/experiment/install/forward_odom/share/ament_index/resource_index/packages
+[2.208s] copying resource/forward_odom -> /home/hashizume/experiment/install/forward_odom/share/ament_index/resource_index/packages
+[2.208s] copying package.xml -> /home/hashizume/experiment/install/forward_odom/share/forward_odom
+[2.209s] running install_egg_info
+[2.210s] Copying ../../build/forward_odom/forward_odom.egg-info to /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom-0.0.0-py3.10.egg-info
+[2.211s] running install_scripts
+[2.231s] writing list of installed files to '/home/hashizume/experiment/build/forward_odom/install.log'
+[2.304s] Invoked command in '/home/hashizume/experiment/src/forward_odom' returned '0': PYTHONPATH=/home/hashizume/experiment/build/forward_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages: /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_odom build --build-base /home/hashizume/experiment/build/forward_odom/build install --record /home/hashizume/experiment/build/forward_odom/install.log --single-version-externally-managed install_data

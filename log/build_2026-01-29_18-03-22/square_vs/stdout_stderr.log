@@ -1,0 +1,26 @@
+running egg_info
+writing ../../build/square_vs/square_vs.egg-info/PKG-INFO
+writing dependency_links to ../../build/square_vs/square_vs.egg-info/dependency_links.txt
+writing entry points to ../../build/square_vs/square_vs.egg-info/entry_points.txt
+writing requirements to ../../build/square_vs/square_vs.egg-info/requires.txt
+writing top-level names to ../../build/square_vs/square_vs.egg-info/top_level.txt
+reading manifest file '../../build/square_vs/square_vs.egg-info/SOURCES.txt'
+writing manifest file '../../build/square_vs/square_vs.egg-info/SOURCES.txt'
+running build
+running build_py
+copying square_vs/square_vs.py -> /home/hashizume/experiment/build/square_vs/build/lib/square_vs
+running install
+running install_lib
+copying /home/hashizume/experiment/build/square_vs/build/lib/square_vs/square_vs.py -> /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs
+byte-compiling /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs/square_vs.py to square_vs.cpython-310.pyc
+  File "/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs/square_vs.py", line 151
+    diff_yaw = self.current_yaw_ -
+                                  ^
+SyntaxError: invalid syntax
+
+running install_egg_info
+removing '/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/square_vs/square_vs.egg-info to /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs-0.0.0-py3.10.egg-info
+running install_scripts
+Installing square_vs script to /home/hashizume/experiment/install/square_vs/lib/square_vs
+writing list of installed files to '/home/hashizume/experiment/build/square_vs/install.log'

@@ -1,0 +1,33 @@
+[1.928s] Invoking command in '/home/hashizume/experiment/src/square_vs': PYTHONPATH=/home/hashizume/experiment/build/square_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages: /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_vs build --build-base /home/hashizume/experiment/build/square_vs/build install --record /home/hashizume/experiment/build/square_vs/install.log --single-version-externally-managed install_data
+[2.146s] running egg_info
+[2.146s] creating ../../build/square_vs/square_vs.egg-info
+[2.146s] writing ../../build/square_vs/square_vs.egg-info/PKG-INFO
+[2.146s] writing dependency_links to ../../build/square_vs/square_vs.egg-info/dependency_links.txt
+[2.147s] writing entry points to ../../build/square_vs/square_vs.egg-info/entry_points.txt
+[2.147s] writing requirements to ../../build/square_vs/square_vs.egg-info/requires.txt
+[2.147s] writing top-level names to ../../build/square_vs/square_vs.egg-info/top_level.txt
+[2.147s] writing manifest file '../../build/square_vs/square_vs.egg-info/SOURCES.txt'
+[2.149s] reading manifest file '../../build/square_vs/square_vs.egg-info/SOURCES.txt'
+[2.151s] writing manifest file '../../build/square_vs/square_vs.egg-info/SOURCES.txt'
+[2.151s] running build
+[2.151s] running build_py
+[2.151s] creating /home/hashizume/experiment/build/square_vs/build
+[2.151s] creating /home/hashizume/experiment/build/square_vs/build/lib
+[2.151s] creating /home/hashizume/experiment/build/square_vs/build/lib/square_vs
+[2.151s] copying square_vs/__init__.py -> /home/hashizume/experiment/build/square_vs/build/lib/square_vs
+[2.151s] running install
+[2.151s] running install_lib
+[2.152s] creating /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs
+[2.153s] copying /home/hashizume/experiment/build/square_vs/build/lib/square_vs/__init__.py -> /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs
+[2.153s] byte-compiling /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs/__init__.py to __init__.cpython-310.pyc
+[2.153s] running install_data
+[2.153s] creating /home/hashizume/experiment/install/square_vs/share/ament_index
+[2.153s] creating /home/hashizume/experiment/install/square_vs/share/ament_index/resource_index
+[2.153s] creating /home/hashizume/experiment/install/square_vs/share/ament_index/resource_index/packages
+[2.153s] copying resource/square_vs -> /home/hashizume/experiment/install/square_vs/share/ament_index/resource_index/packages
+[2.153s] copying package.xml -> /home/hashizume/experiment/install/square_vs/share/square_vs
+[2.153s] running install_egg_info
+[2.154s] Copying ../../build/square_vs/square_vs.egg-info to /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs-0.0.0-py3.10.egg-info
+[2.154s] running install_scripts
+[2.177s] writing list of installed files to '/home/hashizume/experiment/build/square_vs/install.log'
+[2.253s] Invoked command in '/home/hashizume/experiment/src/square_vs' returned '0': PYTHONPATH=/home/hashizume/experiment/build/square_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages: /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_vs build --build-base /home/hashizume/experiment/build/square_vs/build install --record /home/hashizume/experiment/build/square_vs/install.log --single-version-externally-managed install_data

@@ -1,0 +1,23 @@
+[1.945s] Invoking command in '/home/hashizume/experiment/src/forward_vs': PYTHONPATH=/home/hashizume/experiment/build/forward_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_vs build --build-base /home/hashizume/experiment/build/forward_vs/build install --record /home/hashizume/experiment/build/forward_vs/install.log --single-version-externally-managed
+[2.213s] running egg_info
+[2.214s] writing ../../build/forward_vs/forward_vs.egg-info/PKG-INFO
+[2.215s] writing dependency_links to ../../build/forward_vs/forward_vs.egg-info/dependency_links.txt
+[2.215s] writing entry points to ../../build/forward_vs/forward_vs.egg-info/entry_points.txt
+[2.215s] writing requirements to ../../build/forward_vs/forward_vs.egg-info/requires.txt
+[2.215s] writing top-level names to ../../build/forward_vs/forward_vs.egg-info/top_level.txt
+[2.217s] reading manifest file '../../build/forward_vs/forward_vs.egg-info/SOURCES.txt'
+[2.220s] writing manifest file '../../build/forward_vs/forward_vs.egg-info/SOURCES.txt'
+[2.220s] running build
+[2.220s] running build_py
+[2.220s] copying forward_vs/forward_vs.py -> /home/hashizume/experiment/build/forward_vs/build/lib/forward_vs
+[2.220s] running install
+[2.221s] running install_lib
+[2.221s] copying /home/hashizume/experiment/build/forward_vs/build/lib/forward_vs/forward_vs.py -> /home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages/forward_vs
+[2.222s] byte-compiling /home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages/forward_vs/forward_vs.py to forward_vs.cpython-310.pyc
+[2.223s] running install_egg_info
+[2.225s] removing '/home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages/forward_vs-0.0.0-py3.10.egg-info' (and everything under it)
+[2.225s] Copying ../../build/forward_vs/forward_vs.egg-info to /home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages/forward_vs-0.0.0-py3.10.egg-info
+[2.226s] running install_scripts
+[2.246s] Installing forward_vs script to /home/hashizume/experiment/install/forward_vs/lib/forward_vs
+[2.246s] writing list of installed files to '/home/hashizume/experiment/build/forward_vs/install.log'
+[2.300s] Invoked command in '/home/hashizume/experiment/src/forward_vs' returned '0': PYTHONPATH=/home/hashizume/experiment/build/forward_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_vs build --build-base /home/hashizume/experiment/build/forward_vs/build install --record /home/hashizume/experiment/build/forward_vs/install.log --single-version-externally-managed

@@ -1,0 +1,3 @@
+[console_scripts]
+rotate_vs = rotate_vs.rotate_vs:main
+

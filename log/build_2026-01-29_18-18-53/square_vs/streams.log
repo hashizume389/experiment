@@ -1,0 +1,20 @@
+[1.962s] Invoking command in '/home/hashizume/experiment/src/square_vs': PYTHONPATH=/home/hashizume/experiment/build/square_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_vs build --build-base /home/hashizume/experiment/build/square_vs/build install --record /home/hashizume/experiment/build/square_vs/install.log --single-version-externally-managed
+[2.249s] running egg_info
+[2.250s] writing ../../build/square_vs/square_vs.egg-info/PKG-INFO
+[2.250s] writing dependency_links to ../../build/square_vs/square_vs.egg-info/dependency_links.txt
+[2.250s] writing entry points to ../../build/square_vs/square_vs.egg-info/entry_points.txt
+[2.250s] writing requirements to ../../build/square_vs/square_vs.egg-info/requires.txt
+[2.250s] writing top-level names to ../../build/square_vs/square_vs.egg-info/top_level.txt
+[2.253s] reading manifest file '../../build/square_vs/square_vs.egg-info/SOURCES.txt'
+[2.254s] writing manifest file '../../build/square_vs/square_vs.egg-info/SOURCES.txt'
+[2.254s] running build
+[2.254s] running build_py
+[2.255s] running install
+[2.256s] running install_lib
+[2.257s] running install_egg_info
+[2.259s] removing '/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs-0.0.0-py3.10.egg-info' (and everything under it)
+[2.260s] Copying ../../build/square_vs/square_vs.egg-info to /home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages/square_vs-0.0.0-py3.10.egg-info
+[2.261s] running install_scripts
+[2.285s] Installing square_vs script to /home/hashizume/experiment/install/square_vs/lib/square_vs
+[2.286s] writing list of installed files to '/home/hashizume/experiment/build/square_vs/install.log'
+[2.341s] Invoked command in '/home/hashizume/experiment/src/square_vs' returned '0': PYTHONPATH=/home/hashizume/experiment/build/square_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_vs build --build-base /home/hashizume/experiment/build/square_vs/build install --record /home/hashizume/experiment/build/square_vs/install.log --single-version-externally-managed

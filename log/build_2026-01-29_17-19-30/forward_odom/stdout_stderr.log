@@ -1,0 +1,34 @@
+running egg_info
+creating ../../build/forward_odom/forward_odom.egg-info
+writing ../../build/forward_odom/forward_odom.egg-info/PKG-INFO
+writing dependency_links to ../../build/forward_odom/forward_odom.egg-info/dependency_links.txt
+writing entry points to ../../build/forward_odom/forward_odom.egg-info/entry_points.txt
+writing requirements to ../../build/forward_odom/forward_odom.egg-info/requires.txt
+writing top-level names to ../../build/forward_odom/forward_odom.egg-info/top_level.txt
+writing manifest file '../../build/forward_odom/forward_odom.egg-info/SOURCES.txt'
+reading manifest file '../../build/forward_odom/forward_odom.egg-info/SOURCES.txt'
+writing manifest file '../../build/forward_odom/forward_odom.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/hashizume/experiment/build/forward_odom/build
+creating /home/hashizume/experiment/build/forward_odom/build/lib
+creating /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom
+copying forward_odom/__init__.py -> /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom
+copying forward_odom/forward_odom.py -> /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom
+running install
+running install_lib
+creating /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom
+copying /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom/__init__.py -> /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom
+copying /home/hashizume/experiment/build/forward_odom/build/lib/forward_odom/forward_odom.py -> /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom
+byte-compiling /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom/forward_odom.py to forward_odom.cpython-310.pyc
+running install_data
+creating /home/hashizume/experiment/install/forward_odom/share/ament_index
+creating /home/hashizume/experiment/install/forward_odom/share/ament_index/resource_index
+creating /home/hashizume/experiment/install/forward_odom/share/ament_index/resource_index/packages
+copying resource/forward_odom -> /home/hashizume/experiment/install/forward_odom/share/ament_index/resource_index/packages
+copying package.xml -> /home/hashizume/experiment/install/forward_odom/share/forward_odom
+running install_egg_info
+Copying ../../build/forward_odom/forward_odom.egg-info to /home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages/forward_odom-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/hashizume/experiment/build/forward_odom/install.log'
