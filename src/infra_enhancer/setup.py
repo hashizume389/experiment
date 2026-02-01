@@ -11,8 +11,8 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    author='Your Name',
-    author_email='you@example.com',
+    author='Hashizume Takayuki',
+    author_email='AE1212@nara.kosen-ac.jp',
     description='Infrared image preprocessor',
     entry_points={
         'console_scripts': [
