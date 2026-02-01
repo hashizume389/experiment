@@ -65,6 +65,7 @@ class InfraEnhancer(Node):
         self.sub1 = message_filters.Subscriber(self, Image, '/camera/infra1/image_rect_raw')
         self.sub2 = message_filters.Subscriber(self, Image, '/camera/infra2/image_raw')
 
+        #左右画像のマッチング，タイムスタンプの比較でペアを形成
         self.sync = message_filters.ApproximateTimeSynchronizer(
             [self.sub1, self.sub2], self.queue_size, self.slop)
         self.sync.registerCallback(self.callback)
@@ -93,6 +94,7 @@ class InfraEnhancer(Node):
         self.pub1.publish(out1)
         self.pub2.publish(out2)
 
+    #ROS固有の画像フォーマットをOpenCV形式に変換し，画像処理を行う
     def process_image_msg(self, img_msg: Image) -> np.ndarray:
         # Convert to OpenCV image (grayscale 8-bit)
         try:
@@ -107,7 +109,7 @@ class InfraEnhancer(Node):
             # Normalize/scale to 0..255 and convert to uint8
             cv_img = self._to_uint8(raw)
 
-        # Small denoise (light to keep features)
+        # ノイズ除去（Gaussian：全体的にぼかして砂嵐ノイズを除去 or Bilateral：エッジを維持したまま平滑化する）
         if self.denoise == 'gaussian':
             k = self.gaussian_ksize if self.gaussian_ksize % 2 == 1 else self.gaussian_ksize + 1
             if k > 1:
@@ -116,10 +118,10 @@ class InfraEnhancer(Node):
             cv_img = cv2.bilateralFilter(cv_img, self.bilateral_d,
                                          self.bilateral_sigmaColor, self.bilateral_sigmaSpace)
 
-        # CLAHE
+        # CLAHE（コントラスト強調）
         cv_img = self.clahe.apply(cv_img)
 
-        # Normalize to reduce brightness variation - preserve contrast
+        # 正規化（画像全体の明るさのバラつきを抑える）
         cv_img = cv2.normalize(cv_img, None, 0, 255, cv2.NORM_MINMAX)
 
         # Ensure dtype
