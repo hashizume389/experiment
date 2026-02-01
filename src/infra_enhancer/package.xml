@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>infra_enhancer</name>
+  <version>0.0.1</version>
+  <description>Infrared image preprocessor (CLAHE + denoise + normalization) for RealSense infra images</description>
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>message_filters</depend>
+  <depend>opencv-python</depend>
+</package>
