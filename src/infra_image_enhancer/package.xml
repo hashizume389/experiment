@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>infra_image_enhancer</name>
+  <version>0.1.0</version>
+  <description>RealSense赤外線画像の前処理ノード（CLAHE, ノイズ除去, 正規化, 同期）</description>
+  <maintainer email="hassh@example.com">hassh</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>message_filters</exec_depend>
+  <exec_depend>opencv-python</exec_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+</package>
