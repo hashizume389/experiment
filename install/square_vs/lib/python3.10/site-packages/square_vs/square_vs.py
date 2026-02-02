@@ -148,4 +148,107 @@ class MoveSquareVisualSlamNode(Node):
         
         # 累積回転角の計算 (V-SLAMベース)
         if self.current_state_ == self.STATE_ROTATING and self.start_position_ is not None:
-            diff_yaw = self.current_yaw_ 
+            diff_yaw = self.current_yaw_ - self.last_yaw_
+            # -π〜πの範囲に正規化
+            while diff_yaw > math.pi:
+                diff_yaw -= 2 * math.pi
+            while diff_yaw < -math.pi:
+                diff_yaw += 2 * math.pi
+            self.angle_traveled_ += diff_yaw
+        self.last_yaw_ = self.current_yaw_
+
+    def timer_callback(self):
+        """制御ループ: 状態に応じてロボットを動かす"""
+        if self.current_position_ is None:
+            # V-SLAMデータがまだ来ていない
+            return
+
+        twist = Twist()
+
+        if self.current_state_ == self.STATE_MOVING_FORWARD:
+            # 前進開始時の位置を記録
+            if self.start_position_ is None:
+                self.start_position_ = self.current_position_
+                self.distance_traveled_ = 0.0
+                self.get_logger().info(f'辺 {self.loop_count_ + 1}: 前進開始')
+
+            # 移動距離を計算
+            dx = self.current_position_.x - self.start_position_.x
+            dy = self.current_position_.y - self.start_position_.y
+            self.distance_traveled_ = math.sqrt(dx * dx + dy * dy)
+
+            if self.distance_traveled_ >= self.target_distance_:
+                # 目標距離に到達 → 回転へ
+                twist.linear.x = 0.0
+                self.publisher_.publish(twist)
+                self.get_logger().info(f'辺 {self.loop_count_ + 1}: 前進完了 ({self.distance_traveled_:.2f}m)')
+                self.current_state_ = self.STATE_ROTATING
+                self.start_position_ = None
+                self.angle_traveled_ = 0.0
+                self.start_yaw_ = self.current_yaw_
+            else:
+                # 前進継続
+                twist.linear.x = self.linear_velocity_
+                self.publisher_.publish(twist)
+
+        elif self.current_state_ == self.STATE_ROTATING:
+            # 回転開始時の基準を設定
+            if self.start_position_ is None:
+                self.start_position_ = self.current_position_
+                self.start_yaw_ = self.current_yaw_
+                self.angle_traveled_ = 0.0
+                self.get_logger().info(f'辺 {self.loop_count_ + 1}: 回転開始')
+
+            # 目標角度に到達したか確認
+            if abs(self.angle_traveled_) >= abs(self.target_angle_) - self.rotation_tolerance_:
+                # 回転完了
+                twist.angular.z = 0.0
+                self.publisher_.publish(twist)
+                self.loop_count_ += 1
+                self.get_logger().info(f'辺 {self.loop_count_}: 回転完了 ({math.degrees(self.angle_traveled_):.1f}°)')
+
+                if self.loop_count_ >= self.max_loops_:
+                    # 全ての辺を完了
+                    self.current_state_ = self.STATE_DONE
+                    self.get_logger().info('正方形軌道完了！')
+                    self._cleanup()
+                else:
+                    # 次の辺へ
+                    self.current_state_ = self.STATE_MOVING_FORWARD
+                    self.start_position_ = None
+            else:
+                # 回転継続 (時計回り: 負の角速度)
+                twist.angular.z = -self.angular_velocity_ if self.target_angle_ < 0 else self.angular_velocity_
+                self.publisher_.publish(twist)
+
+        elif self.current_state_ == self.STATE_DONE:
+            # 完了状態: 何もしない
+            pass
+
+    def _cleanup(self):
+        """終了処理"""
+        # タイマー停止
+        if self.timer_:
+            self.timer_.cancel()
+            self.timer_ = None
+        # CSVファイルを閉じる
+        if self.csv_file_:
+            self.csv_file_.close()
+            self.csv_file_ = None
+            self.get_logger().info(f'CSV保存完了: {self.csv_filename_}')
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = MoveSquareVisualSlamNode()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

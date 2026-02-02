@@ -1,0 +1,12 @@
+source;share/infra_enhancer/hook/path.ps1
+source;share/infra_enhancer/hook/path.dsv
+source;share/infra_enhancer/hook/path.sh
+source;share/infra_enhancer/hook/pythonpath.ps1
+source;share/infra_enhancer/hook/pythonpath.dsv
+source;share/infra_enhancer/hook/pythonpath.sh
+source;share/infra_enhancer/hook/pythonscriptspath.ps1
+source;share/infra_enhancer/hook/pythonscriptspath.dsv
+source;share/infra_enhancer/hook/pythonscriptspath.sh
+source;share/infra_enhancer/hook/ament_prefix_path.ps1
+source;share/infra_enhancer/hook/ament_prefix_path.dsv
+source;share/infra_enhancer/hook/ament_prefix_path.sh

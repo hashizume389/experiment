@@ -1,0 +1,4 @@
+[0.455s] Invoking command in '/home/hashizume/experiment/experiment/build/infra_enhancer': /usr/bin/cmake /home/hashizume/experiment/experiment/src/infra_enhancer -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/hashizume/experiment/experiment/install/infra_enhancer
+[1.108s] [0mCMake Error: The source directory "/home/hashizume/experiment/experiment/src/infra_enhancer" does not appear to contain CMakeLists.txt.
+[1.109s] Specify --help for usage, or press the help button on the CMake GUI.[0m
+[1.329s] Invoked command in '/home/hashizume/experiment/experiment/build/infra_enhancer' returned '1': /usr/bin/cmake /home/hashizume/experiment/experiment/src/infra_enhancer -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/hashizume/experiment/experiment/install/infra_enhancer

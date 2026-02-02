@@ -1,13 +1,18 @@
 from setuptools import setup
+import os
+from glob import glob
 
 package_name = 'infra_enhancer'
 
 setup(
     name=package_name,
     version='0.0.1',
-    packages=["infra_enhancer"],
+    packages=[package_name],
     data_files=[
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        # Install scripts to lib/<package_name> for ros2 run to find them
+        ('lib/' + package_name, glob('scripts/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

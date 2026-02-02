@@ -1,0 +1,3 @@
+[console_scripts]
+infra_enhancer_node = infra_enhancer.enhancer_node:main
+

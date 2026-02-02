@@ -1,0 +1,2 @@
+Invoking command in '/home/hashizume/experiment/experiment/build/infra_enhancer': /usr/bin/cmake /home/hashizume/experiment/experiment/src/infra_enhancer -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/hashizume/experiment/experiment/install/infra_enhancer
+Invoked command in '/home/hashizume/experiment/experiment/build/infra_enhancer' returned '1': /usr/bin/cmake /home/hashizume/experiment/experiment/src/infra_enhancer -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/hashizume/experiment/experiment/install/infra_enhancer
