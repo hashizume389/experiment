@@ -25,7 +25,7 @@ class MoveSquareVisualSlamNode(Node):
         self.angular_velocity_ = 0.1        # 回転速度 (rad/s)
         
         # トピック設定
-        self.vslam_topic_ = 'visual_slam/tracking/odometry' # 制御に使用
+        self.vslam_topic_ = '/visual_slam/tracking/odometry' # 制御に使用
         self.wheel_topic_ = '/odom'                         # ログ記録のみに使用
         self.cmd_vel_topic_ = '/cmd_vel'
         # ▲▲▲ 設定パラメータ ▲▲▲
