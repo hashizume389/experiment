@@ -174,3 +174,16 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
+
+"""
+処理後の画像をIsaac ROS Visual SLAMに入力するには
+
+remappings=[
+    ('visual_slam/image_0', '/proc/infra1/image_enhanced'),  # 変更
+    ('visual_slam/camera_info_0', 'camera/infra1/camera_info'),
+    ('visual_slam/image_1', '/proc/infra2/image_enhanced'),  # 変更
+    ('visual_slam/camera_info_1', 'camera/infra2/camera_info'),
+    ('visual_slam/imu', 'camera/imu'),
+],
+"""

@@ -1,0 +1,23 @@
+[2.362s] Invoking command in '/home/hashizume/experiment/src/square_odom': PYTHONPATH=/home/hashizume/experiment/build/square_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_odom build --build-base /home/hashizume/experiment/build/square_odom/build install --record /home/hashizume/experiment/build/square_odom/install.log --single-version-externally-managed
+[2.579s] running egg_info
+[2.579s] writing ../../build/square_odom/square_odom.egg-info/PKG-INFO
+[2.579s] writing dependency_links to ../../build/square_odom/square_odom.egg-info/dependency_links.txt
+[2.580s] writing entry points to ../../build/square_odom/square_odom.egg-info/entry_points.txt
+[2.580s] writing requirements to ../../build/square_odom/square_odom.egg-info/requires.txt
+[2.580s] writing top-level names to ../../build/square_odom/square_odom.egg-info/top_level.txt
+[2.581s] reading manifest file '../../build/square_odom/square_odom.egg-info/SOURCES.txt'
+[2.582s] writing manifest file '../../build/square_odom/square_odom.egg-info/SOURCES.txt'
+[2.583s] running build
+[2.583s] running build_py
+[2.583s] copying square_odom/square_odom.py -> /home/hashizume/experiment/build/square_odom/build/lib/square_odom
+[2.584s] running install
+[2.584s] running install_lib
+[2.585s] copying /home/hashizume/experiment/build/square_odom/build/lib/square_odom/square_odom.py -> /home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages/square_odom
+[2.586s] byte-compiling /home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages/square_odom/square_odom.py to square_odom.cpython-310.pyc
+[2.588s] running install_egg_info
+[2.590s] removing '/home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages/square_odom-0.0.0-py3.10.egg-info' (and everything under it)
+[2.591s] Copying ../../build/square_odom/square_odom.egg-info to /home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages/square_odom-0.0.0-py3.10.egg-info
+[2.592s] running install_scripts
+[2.612s] Installing square_odom script to /home/hashizume/experiment/install/square_odom/lib/square_odom
+[2.612s] writing list of installed files to '/home/hashizume/experiment/build/square_odom/install.log'
+[2.676s] Invoked command in '/home/hashizume/experiment/src/square_odom' returned '0': PYTHONPATH=/home/hashizume/experiment/build/square_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_odom build --build-base /home/hashizume/experiment/build/square_odom/build install --record /home/hashizume/experiment/build/square_odom/install.log --single-version-externally-managed

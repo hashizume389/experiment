@@ -42,7 +42,6 @@ class MoveForwardVisualSlamNode(Node):
         
         try:
             now = datetime.datetime.now()
-            # ファイル名を変更
             self.csv_filename_ = f'forward_compare_log_{now.strftime("%Y%m%d_%H%M%S")}.csv'
             
             self.csv_file_ = open(self.csv_filename_, 'w', newline='', encoding='utf-8')
@@ -93,4 +92,103 @@ class MoveForwardVisualSlamNode(Node):
 
     def wheel_odom_callback(self, msg: Odometry):
         """ホイールオドメトリのデータを受信して保持する"""
-        self.wheel_position_ = msg.pose
+        self.wheel_position_ = msg.pose.pose.position
+
+    def vslam_callback(self, msg: Odometry):
+        """Visual SLAMのデータを受信し、CSV記録と制御用の位置を更新する"""
+        self.current_position_ = msg.pose.pose.position
+        
+        # CSV記録 (V-SLAM受信時に、最新のホイールオドメトリも一緒に書く)
+        if self.csv_writer_:
+            try:
+                ts = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
+                
+                # ホイールデータがまだ来ていない場合のガード
+                wx = self.wheel_position_.x if self.wheel_position_ else 0.0
+                wy = self.wheel_position_.y if self.wheel_position_ else 0.0
+                wz = self.wheel_position_.z if self.wheel_position_ else 0.0
+                
+                self.csv_writer_.writerow([
+                    ts,
+                    self.current_position_.x, self.current_position_.y, self.current_position_.z,
+                    wx, wy, wz
+                ])
+            except Exception as e:
+                self.get_logger().error(f"CSV書き込みエラー: {e}", throttle_duration_sec=10)
+        
+        # 最初の位置を記録
+        if self.initial_position_ is None:
+            self.initial_position_ = self.current_position_
+            self.get_logger().info(
+                f'初期位置を記録 (V-SLAM): x={self.initial_position_.x:.2f}, y={self.initial_position_.y:.2f}'
+            )
+
+    def timer_callback(self):
+        """制御ループ。50Hzで実行されます。"""
+        # オドメトリをまだ受信していないか、目標達成済みの場合は何もしない
+        if self.initial_position_ is None:
+            self.get_logger().warn('まだV-SLAMデータを受信していません...', throttle_duration_sec=5)
+            return
+
+        if self.goal_reached_:
+            # 目標達成後は停止コマンドを送り続ける
+            stop_msg = Twist()
+            self.publisher_.publish(stop_msg)
+            return
+
+        # 初期位置からの移動距離（ユークリッド距離）を計算
+        dx = self.current_position_.x - self.initial_position_.x
+        dy = self.current_position_.y - self.initial_position_.y
+        self.distance_traveled_ = math.sqrt(dx*dx + dy*dy)
+
+        # 目標距離に達しているかチェック
+        if self.distance_traveled_ < self.target_distance_:
+            # 目標未達: 前進コマンドを送信
+            move_msg = Twist()
+            move_msg.linear.x = self.linear_velocity_
+            self.publisher_.publish(move_msg)
+            
+            self.get_logger().info(
+                f'移動中... {self.distance_traveled_:.2f}m / {self.target_distance_}m',
+                throttle_duration_sec=1
+            )
+        else:
+            # 目標達成: 停止コマンドを送信し、フラグを立てる
+            self.goal_reached_ = True
+            stop_msg = Twist()
+            self.publisher_.publish(stop_msg)
+            
+            self.get_logger().info(
+                f'目標距離 {self.target_distance_}m に到達しました。ロボットを停止します。'
+            )
+            self.close_csv_file()
+            self.get_logger().info('ノードを終了するには Ctrl+C を押してください。')
+
+    def close_csv_file(self):
+        """CSVファイルをクローズする"""
+        if self.csv_file_:
+            self.csv_file_.close()
+            self.csv_file_ = None
+            self.get_logger().info(f'CSVファイル [{self.csv_filename_}] をクローズしました。')
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = MoveForwardVisualSlamNode()
+    
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        node.get_logger().info('キーボード割り込みによりシャットダウンします...')
+    finally:
+        # シャットダウン時に必ず停止コマンドを送信する
+        if rclpy.ok():
+            node.get_logger().info('最後に停止コマンドを送信します。')
+            node.publisher_.publish(Twist()) # 停止コマンド
+            
+            node.close_csv_file()
+            
+            node.destroy_node()
+            rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()

@@ -21,7 +21,7 @@ class RotateInPlaceVisualSlamNode(Node):
         self.angular_velocity_ = 0.1
         
         # トピック名
-        self.vslam_topic_ = 'visual_slam/tracking/odometry'
+        self.vslam_topic_ = '/visual_slam/tracking/odometry'
         self.wheel_topic_ = '/odom'
         self.cmd_vel_topic_ = '/cmd_vel'
     
