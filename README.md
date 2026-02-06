@@ -81,3 +81,9 @@ cd ~/experiment && source install/setup.bash
 ```bash
 ros2 run square_vs square_vs
 ```
+
+### Visual SLAMの設定
+```bash
+640×480
+15FPS
+```
