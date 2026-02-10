@@ -1,0 +1,21 @@
+[2.262s] Invoking command in '/home/hashizume/experiment/src/infra_enhancer': PYTHONPATH=/home/hashizume/experiment/build/infra_enhancer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/infra_enhancer build --build-base /home/hashizume/experiment/build/infra_enhancer/build install --record /home/hashizume/experiment/build/infra_enhancer/install.log --single-version-externally-managed install_data
+[2.477s] running egg_info
+[2.477s] writing ../../build/infra_enhancer/infra_enhancer.egg-info/PKG-INFO
+[2.478s] writing dependency_links to ../../build/infra_enhancer/infra_enhancer.egg-info/dependency_links.txt
+[2.478s] writing entry points to ../../build/infra_enhancer/infra_enhancer.egg-info/entry_points.txt
+[2.478s] writing requirements to ../../build/infra_enhancer/infra_enhancer.egg-info/requires.txt
+[2.478s] writing top-level names to ../../build/infra_enhancer/infra_enhancer.egg-info/top_level.txt
+[2.480s] reading manifest file '../../build/infra_enhancer/infra_enhancer.egg-info/SOURCES.txt'
+[2.481s] writing manifest file '../../build/infra_enhancer/infra_enhancer.egg-info/SOURCES.txt'
+[2.481s] running build
+[2.481s] running build_py
+[2.481s] running install
+[2.482s] running install_lib
+[2.483s] running install_data
+[2.484s] running install_egg_info
+[2.486s] removing '/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer-0.0.1-py3.10.egg-info' (and everything under it)
+[2.486s] Copying ../../build/infra_enhancer/infra_enhancer.egg-info to /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer-0.0.1-py3.10.egg-info
+[2.487s] running install_scripts
+[2.510s] Installing infra_enhancer_node script to /home/hashizume/experiment/install/infra_enhancer/bin
+[2.511s] writing list of installed files to '/home/hashizume/experiment/build/infra_enhancer/install.log'
+[2.570s] Invoked command in '/home/hashizume/experiment/src/infra_enhancer' returned '0': PYTHONPATH=/home/hashizume/experiment/build/infra_enhancer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/infra_enhancer build --build-base /home/hashizume/experiment/build/infra_enhancer/build install --record /home/hashizume/experiment/build/infra_enhancer/install.log --single-version-externally-managed install_data

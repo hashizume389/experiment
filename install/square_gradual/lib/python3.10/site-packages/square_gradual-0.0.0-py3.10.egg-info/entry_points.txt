@@ -1,0 +1,3 @@
+[console_scripts]
+square_gradual = square_gradual.square_gradual:main
+
