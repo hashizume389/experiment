@@ -6,6 +6,7 @@ from geometry_msgs.msg import Twist
 import math
 import csv
 import datetime
+import os
 
 class RotateInPlaceWheelOdomNode(Node):
     """
@@ -54,7 +55,9 @@ class RotateInPlaceWheelOdomNode(Node):
     def setup_csv(self):
         try:
             now = datetime.datetime.now()
-            self.csv_filename_ = f'wheel_odom_log_{now.strftime("%Y%m%d_%H%M%S")}.csv'
+            log_dir = 'results'
+            os.makedirs(log_dir, exist_ok=True)
+            self.csv_filename_ = os.path.join(log_dir, f'wheel_odom_log_{now.strftime("%Y%m%d_%H%M%S")}.csv')
             self.csv_file_ = open(self.csv_filename_, 'w', newline='', encoding='utf-8')
             self.csv_writer_ = csv.writer(self.csv_file_)
             self.csv_writer_.writerow(['timestamp', 'x', 'y', 'yaw'])

@@ -6,6 +6,7 @@ from geometry_msgs.msg import Twist
 import math
 import csv
 import datetime
+import os
 
 class MoveSquareGradualNode(Node):
     """
@@ -70,7 +71,9 @@ class MoveSquareGradualNode(Node):
         self.csv_filename_ = ""
         try:
             now = datetime.datetime.now()
-            self.csv_filename_ = f'square_gradual_log_{now.strftime("%Y%m%d_%H%M%S")}.csv'
+            log_dir = 'results'
+            os.makedirs(log_dir, exist_ok=True)
+            self.csv_filename_ = os.path.join(log_dir, f'square_gradual_log_{now.strftime("%Y%m%d_%H%M%S")}.csv')
             self.csv_file_ = open(self.csv_filename_, 'w', newline='', encoding='utf-8')
             self.csv_writer_ = csv.writer(self.csv_file_)
             

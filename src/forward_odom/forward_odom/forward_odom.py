@@ -4,8 +4,9 @@ from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 import math
-import csv             
-import datetime        
+import csv
+import datetime
+import os
 
 class MoveForwardNode(Node):
     """
@@ -34,7 +35,9 @@ class MoveForwardNode(Node):
         try:
             # タイムスタンプ付きのファイル名を生成
             now = datetime.datetime.now()
-            self.csv_filename_ = f'odom_log_{now.strftime("%Y%m%d_%H%M%S")}.csv'
+            log_dir = 'results'
+            os.makedirs(log_dir, exist_ok=True)
+            self.csv_filename_ = os.path.join(log_dir, f'odom_log_{now.strftime("%Y%m%d_%H%M%S")}.csv')
             
             # ファイルを開き、ライターを準備
             # newline='' はCSV書き込み時の標準的なお作法です
