@@ -13,7 +13,7 @@ cd ${ISAAC_ROS_WS}/src/isaac_ros_common && \
 
 ### 依存関係のインストール
 ```bash
-sudo apt-get update &&rosdep update && rosdep install --from-paths ${ISAAC_ROS_WS}/src/isaac_ros_visual_slam/isaac_ros_visual_slam --ignore-src -y
+sudo apt-get update && rosdep update && rosdep install --from-paths ${ISAAC_ROS_WS}/src/isaac_ros_visual_slam/isaac_ros_visual_slam --ignore-src -y
 ```
 
 ### 環境の有効化
