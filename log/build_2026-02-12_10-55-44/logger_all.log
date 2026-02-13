@@ -1,0 +1,499 @@
+[0.187s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.187s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=16, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f035da268c0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f035dbc3ee0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f035dbc3ee0>>)
+[0.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.369s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.370s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.370s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/hashizume/experiment'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extensions ['ignore', 'ignore_ament_install']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extension 'ignore'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extension 'ignore_ament_install'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extensions ['colcon_pkg']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extension 'colcon_pkg'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extensions ['colcon_meta']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extension 'colcon_meta'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extensions ['ros']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_odom) by extension 'ros'
+[0.383s] DEBUG:colcon.colcon_core.package_identification:Package 'src/forward_odom' with type 'ros.ament_python' and name 'forward_odom'
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extensions ['ignore', 'ignore_ament_install']
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extension 'ignore'
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extension 'ignore_ament_install'
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extensions ['colcon_pkg']
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extension 'colcon_pkg'
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extensions ['colcon_meta']
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extension 'colcon_meta'
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extensions ['ros']
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(src/forward_vs) by extension 'ros'
+[0.384s] DEBUG:colcon.colcon_core.package_identification:Package 'src/forward_vs' with type 'ros.ament_python' and name 'forward_vs'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extensions ['ignore', 'ignore_ament_install']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extension 'ignore'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extension 'ignore_ament_install'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extensions ['colcon_pkg']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extension 'colcon_pkg'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extensions ['colcon_meta']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extension 'colcon_meta'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extensions ['ros']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(src/infra_enhancer) by extension 'ros'
+[0.385s] DEBUG:colcon.colcon_core.package_identification:Package 'src/infra_enhancer' with type 'ros.ament_python' and name 'infra_enhancer'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extensions ['ignore', 'ignore_ament_install']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extension 'ignore'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extension 'ignore_ament_install'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extensions ['colcon_pkg']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extension 'colcon_pkg'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extensions ['colcon_meta']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extension 'colcon_meta'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extensions ['ros']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_odom) by extension 'ros'
+[0.385s] DEBUG:colcon.colcon_core.package_identification:Package 'src/rotate_odom' with type 'ros.ament_python' and name 'rotate_odom'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extensions ['ignore', 'ignore_ament_install']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extension 'ignore'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extension 'ignore_ament_install'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extensions ['colcon_pkg']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extension 'colcon_pkg'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extensions ['colcon_meta']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extension 'colcon_meta'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extensions ['ros']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/rotate_vs) by extension 'ros'
+[0.386s] DEBUG:colcon.colcon_core.package_identification:Package 'src/rotate_vs' with type 'ros.ament_python' and name 'rotate_vs'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extensions ['ignore', 'ignore_ament_install']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extension 'ignore'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extension 'ignore_ament_install'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extensions ['colcon_pkg']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extension 'colcon_pkg'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extensions ['colcon_meta']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extension 'colcon_meta'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extensions ['ros']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_gradual) by extension 'ros'
+[0.387s] DEBUG:colcon.colcon_core.package_identification:Package 'src/square_gradual' with type 'ros.ament_python' and name 'square_gradual'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extensions ['ignore', 'ignore_ament_install']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extension 'ignore'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extension 'ignore_ament_install'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extensions ['colcon_pkg']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extension 'colcon_pkg'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extensions ['colcon_meta']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extension 'colcon_meta'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extensions ['ros']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_odom) by extension 'ros'
+[0.388s] DEBUG:colcon.colcon_core.package_identification:Package 'src/square_odom' with type 'ros.ament_python' and name 'square_odom'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extensions ['ignore', 'ignore_ament_install']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extension 'ignore'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extension 'ignore_ament_install'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extensions ['colcon_pkg']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extension 'colcon_pkg'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extensions ['colcon_meta']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extension 'colcon_meta'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extensions ['ros']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/square_vs) by extension 'ros'
+[0.389s] DEBUG:colcon.colcon_core.package_identification:Package 'src/square_vs' with type 'ros.ament_python' and name 'square_vs'
+[0.389s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.389s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.389s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.389s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.389s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.421s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.421s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.424s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 8 installed packages in /home/hashizume/experiment/install
+[0.425s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 334 installed packages in /opt/ros/humble
+[0.426s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'cmake_args' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'cmake_target' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'cmake_clean_cache' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'cmake_clean_first' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'cmake_force_configure' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'ament_cmake_args' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'catkin_cmake_args' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_odom' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.456s] DEBUG:colcon.colcon_core.verb:Building package 'forward_odom' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/forward_odom', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/forward_odom', 'merge_install': False, 'path': '/home/hashizume/experiment/src/forward_odom', 'symlink_install': False, 'test_result_base': None}
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'cmake_args' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'cmake_target' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'cmake_clean_first' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'cmake_force_configure' from command line to 'False'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'ament_cmake_args' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.456s] Level 5:colcon.colcon_core.verb:set package 'forward_vs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.456s] DEBUG:colcon.colcon_core.verb:Building package 'forward_vs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/forward_vs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/forward_vs', 'merge_install': False, 'path': '/home/hashizume/experiment/src/forward_vs', 'symlink_install': False, 'test_result_base': None}
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'cmake_args' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'cmake_target' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'cmake_clean_cache' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'cmake_clean_first' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'cmake_force_configure' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'ament_cmake_args' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'catkin_cmake_args' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'infra_enhancer' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.457s] DEBUG:colcon.colcon_core.verb:Building package 'infra_enhancer' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/infra_enhancer', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/infra_enhancer', 'merge_install': False, 'path': '/home/hashizume/experiment/src/infra_enhancer', 'symlink_install': False, 'test_result_base': None}
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'cmake_args' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'cmake_target' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'cmake_clean_cache' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'cmake_clean_first' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'cmake_force_configure' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'ament_cmake_args' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'catkin_cmake_args' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_odom' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.457s] DEBUG:colcon.colcon_core.verb:Building package 'rotate_odom' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/rotate_odom', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/rotate_odom', 'merge_install': False, 'path': '/home/hashizume/experiment/src/rotate_odom', 'symlink_install': False, 'test_result_base': None}
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'cmake_args' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'cmake_target' from command line to 'None'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.457s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'cmake_clean_first' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'cmake_force_configure' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'ament_cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'rotate_vs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.458s] DEBUG:colcon.colcon_core.verb:Building package 'rotate_vs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/rotate_vs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/rotate_vs', 'merge_install': False, 'path': '/home/hashizume/experiment/src/rotate_vs', 'symlink_install': False, 'test_result_base': None}
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'cmake_target' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'cmake_clean_cache' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'cmake_clean_first' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'cmake_force_configure' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'ament_cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'catkin_cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_gradual' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.458s] DEBUG:colcon.colcon_core.verb:Building package 'square_gradual' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/square_gradual', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/square_gradual', 'merge_install': False, 'path': '/home/hashizume/experiment/src/square_gradual', 'symlink_install': False, 'test_result_base': None}
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'cmake_target' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'cmake_clean_cache' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'cmake_clean_first' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'cmake_force_configure' from command line to 'False'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'ament_cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'catkin_cmake_args' from command line to 'None'
+[0.458s] Level 5:colcon.colcon_core.verb:set package 'square_odom' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.458s] DEBUG:colcon.colcon_core.verb:Building package 'square_odom' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/square_odom', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/square_odom', 'merge_install': False, 'path': '/home/hashizume/experiment/src/square_odom', 'symlink_install': False, 'test_result_base': None}
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'cmake_args' from command line to 'None'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'cmake_target' from command line to 'None'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'cmake_clean_first' from command line to 'False'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'cmake_force_configure' from command line to 'False'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'ament_cmake_args' from command line to 'None'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.459s] Level 5:colcon.colcon_core.verb:set package 'square_vs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.459s] DEBUG:colcon.colcon_core.verb:Building package 'square_vs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hashizume/experiment/build/square_vs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hashizume/experiment/install/square_vs', 'merge_install': False, 'path': '/home/hashizume/experiment/src/square_vs', 'symlink_install': False, 'test_result_base': None}
+[0.459s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.460s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.460s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/forward_odom' with build type 'ament_python'
+[0.460s] Level 1:colcon.colcon_core.shell:create_environment_hook('forward_odom', 'ament_prefix_path')
+[0.463s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.463s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_odom/share/forward_odom/hook/ament_prefix_path.ps1'
+[0.464s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/forward_odom/share/forward_odom/hook/ament_prefix_path.dsv'
+[0.464s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_odom/share/forward_odom/hook/ament_prefix_path.sh'
+[0.465s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.465s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.468s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/forward_vs' with build type 'ament_python'
+[0.468s] Level 1:colcon.colcon_core.shell:create_environment_hook('forward_vs', 'ament_prefix_path')
+[0.469s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_vs/share/forward_vs/hook/ament_prefix_path.ps1'
+[0.469s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/forward_vs/share/forward_vs/hook/ament_prefix_path.dsv'
+[0.469s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_vs/share/forward_vs/hook/ament_prefix_path.sh'
+[0.470s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.470s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.473s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/infra_enhancer' with build type 'ament_python'
+[0.473s] Level 1:colcon.colcon_core.shell:create_environment_hook('infra_enhancer', 'ament_prefix_path')
+[0.473s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/ament_prefix_path.ps1'
+[0.473s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/ament_prefix_path.dsv'
+[0.474s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/ament_prefix_path.sh'
+[0.474s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.474s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.477s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/rotate_odom' with build type 'ament_python'
+[0.477s] Level 1:colcon.colcon_core.shell:create_environment_hook('rotate_odom', 'ament_prefix_path')
+[0.477s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/hook/ament_prefix_path.ps1'
+[0.477s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/hook/ament_prefix_path.dsv'
+[0.478s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/hook/ament_prefix_path.sh'
+[0.478s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.478s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.481s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/rotate_vs' with build type 'ament_python'
+[0.481s] Level 1:colcon.colcon_core.shell:create_environment_hook('rotate_vs', 'ament_prefix_path')
+[0.481s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/hook/ament_prefix_path.ps1'
+[0.481s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/hook/ament_prefix_path.dsv'
+[0.481s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/hook/ament_prefix_path.sh'
+[0.482s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.482s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.484s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/square_gradual' with build type 'ament_python'
+[0.485s] Level 1:colcon.colcon_core.shell:create_environment_hook('square_gradual', 'ament_prefix_path')
+[0.485s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_gradual/share/square_gradual/hook/ament_prefix_path.ps1'
+[0.485s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/square_gradual/share/square_gradual/hook/ament_prefix_path.dsv'
+[0.485s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_gradual/share/square_gradual/hook/ament_prefix_path.sh'
+[0.486s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.486s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.489s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/square_odom' with build type 'ament_python'
+[0.489s] Level 1:colcon.colcon_core.shell:create_environment_hook('square_odom', 'ament_prefix_path')
+[0.489s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_odom/share/square_odom/hook/ament_prefix_path.ps1'
+[0.490s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/square_odom/share/square_odom/hook/ament_prefix_path.dsv'
+[0.490s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_odom/share/square_odom/hook/ament_prefix_path.sh'
+[0.490s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.490s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.493s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hashizume/experiment/src/square_vs' with build type 'ament_python'
+[0.493s] Level 1:colcon.colcon_core.shell:create_environment_hook('square_vs', 'ament_prefix_path')
+[0.493s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_vs/share/square_vs/hook/ament_prefix_path.ps1'
+[0.494s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/square_vs/share/square_vs/hook/ament_prefix_path.dsv'
+[0.494s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_vs/share/square_vs/hook/ament_prefix_path.sh'
+[0.494s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.494s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.702s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'forward_odom' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[0.702s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'forward_odom' doesn't explicitly install the 'package.xml' file (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[0.703s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/forward_odom'
+[0.703s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.703s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.903s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'forward_vs' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[0.903s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'forward_vs' doesn't explicitly install the 'package.xml' file (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[0.904s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/forward_vs'
+[0.904s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.904s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.103s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/infra_enhancer'
+[1.103s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.104s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.301s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'rotate_odom' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.301s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'rotate_odom' doesn't explicitly install the 'package.xml' file (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.301s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/rotate_odom'
+[1.301s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.302s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.509s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'rotate_vs' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.510s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'rotate_vs' doesn't explicitly install the 'package.xml' file (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.510s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/rotate_vs'
+[1.510s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.510s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.711s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'square_gradual' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.711s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'square_gradual' doesn't explicitly install the 'package.xml' file (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.711s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/square_gradual'
+[1.711s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.711s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.911s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'square_odom' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.911s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'square_odom' doesn't explicitly install the 'package.xml' file (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[1.911s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/square_odom'
+[1.912s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.912s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.112s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'square_vs' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[2.112s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'square_vs' doesn't explicitly install the 'package.xml' file (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[2.112s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hashizume/experiment/src/square_vs'
+[2.113s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.113s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.695s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/rotate_odom': PYTHONPATH=/home/hashizume/experiment/build/rotate_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_odom build --build-base /home/hashizume/experiment/build/rotate_odom/build install --record /home/hashizume/experiment/build/rotate_odom/install.log --single-version-externally-managed
+[2.703s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/rotate_vs': PYTHONPATH=/home/hashizume/experiment/build/rotate_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_vs build --build-base /home/hashizume/experiment/build/rotate_vs/build install --record /home/hashizume/experiment/build/rotate_vs/install.log --single-version-externally-managed
+[2.706s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/forward_odom': PYTHONPATH=/home/hashizume/experiment/build/forward_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_odom build --build-base /home/hashizume/experiment/build/forward_odom/build install --record /home/hashizume/experiment/build/forward_odom/install.log --single-version-externally-managed
+[2.721s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/square_vs': PYTHONPATH=/home/hashizume/experiment/build/square_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_vs build --build-base /home/hashizume/experiment/build/square_vs/build install --record /home/hashizume/experiment/build/square_vs/install.log --single-version-externally-managed
+[2.724s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/forward_vs': PYTHONPATH=/home/hashizume/experiment/build/forward_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_vs build --build-base /home/hashizume/experiment/build/forward_vs/build install --record /home/hashizume/experiment/build/forward_vs/install.log --single-version-externally-managed
+[2.728s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/infra_enhancer': PYTHONPATH=/home/hashizume/experiment/build/infra_enhancer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/infra_enhancer build --build-base /home/hashizume/experiment/build/infra_enhancer/build install --record /home/hashizume/experiment/build/infra_enhancer/install.log --single-version-externally-managed install_data
+[2.732s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/square_gradual': PYTHONPATH=/home/hashizume/experiment/build/square_gradual/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_gradual/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_gradual build --build-base /home/hashizume/experiment/build/square_gradual/build install --record /home/hashizume/experiment/build/square_gradual/install.log --single-version-externally-managed
+[2.733s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hashizume/experiment/src/square_odom': PYTHONPATH=/home/hashizume/experiment/build/square_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_odom build --build-base /home/hashizume/experiment/build/square_odom/build install --record /home/hashizume/experiment/build/square_odom/install.log --single-version-externally-managed
+[3.002s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/forward_odom' returned '0': PYTHONPATH=/home/hashizume/experiment/build/forward_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_odom build --build-base /home/hashizume/experiment/build/forward_odom/build install --record /home/hashizume/experiment/build/forward_odom/install.log --single-version-externally-managed
+[3.007s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_odom' for CMake module files
+[3.007s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_odom' for CMake config files
+[3.008s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_odom/lib'
+[3.008s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_odom/bin'
+[3.008s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_odom/lib/pkgconfig/forward_odom.pc'
+[3.009s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_odom/lib/python3.10/site-packages'
+[3.009s] Level 1:colcon.colcon_core.shell:create_environment_hook('forward_odom', 'pythonpath')
+[3.009s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_odom/share/forward_odom/hook/pythonpath.ps1'
+[3.010s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/forward_odom/share/forward_odom/hook/pythonpath.dsv'
+[3.010s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_odom/share/forward_odom/hook/pythonpath.sh'
+[3.010s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_odom/bin'
+[3.010s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(forward_odom)
+[3.011s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_odom/share/forward_odom/package.ps1'
+[3.011s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/forward_odom/share/forward_odom/package.dsv'
+[3.012s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_odom/share/forward_odom/package.sh'
+[3.013s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_odom/share/forward_odom/package.bash'
+[3.013s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_odom/share/forward_odom/package.zsh'
+[3.014s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/forward_odom/share/colcon-core/packages/forward_odom)
+[3.015s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_vs' for CMake module files
+[3.016s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_vs' for CMake config files
+[3.016s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/rotate_vs' returned '0': PYTHONPATH=/home/hashizume/experiment/build/rotate_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_vs build --build-base /home/hashizume/experiment/build/rotate_vs/build install --record /home/hashizume/experiment/build/rotate_vs/install.log --single-version-externally-managed
+[3.017s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_vs/lib'
+[3.017s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_vs/bin'
+[3.017s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_vs/lib/pkgconfig/rotate_vs.pc'
+[3.017s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_vs/lib/python3.10/site-packages'
+[3.017s] Level 1:colcon.colcon_core.shell:create_environment_hook('rotate_vs', 'pythonpath')
+[3.017s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/hook/pythonpath.ps1'
+[3.018s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/hook/pythonpath.dsv'
+[3.018s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/hook/pythonpath.sh'
+[3.019s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_vs/bin'
+[3.019s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rotate_vs)
+[3.019s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/package.ps1'
+[3.019s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/package.dsv'
+[3.020s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/package.sh'
+[3.020s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/package.bash'
+[3.020s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_vs/share/rotate_vs/package.zsh'
+[3.021s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/rotate_vs/share/colcon-core/packages/rotate_vs)
+[3.023s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_odom' for CMake module files
+[3.024s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/rotate_odom' returned '0': PYTHONPATH=/home/hashizume/experiment/build/rotate_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_odom build --build-base /home/hashizume/experiment/build/rotate_odom/build install --record /home/hashizume/experiment/build/rotate_odom/install.log --single-version-externally-managed
+[3.024s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_odom' for CMake config files
+[3.024s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_odom/lib'
+[3.024s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_odom/bin'
+[3.024s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_odom/lib/pkgconfig/rotate_odom.pc'
+[3.025s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_odom/lib/python3.10/site-packages'
+[3.025s] Level 1:colcon.colcon_core.shell:create_environment_hook('rotate_odom', 'pythonpath')
+[3.025s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/hook/pythonpath.ps1'
+[3.026s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/hook/pythonpath.dsv'
+[3.026s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/hook/pythonpath.sh'
+[3.026s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/rotate_odom/bin'
+[3.026s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rotate_odom)
+[3.027s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/package.ps1'
+[3.027s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/package.dsv'
+[3.028s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/package.sh'
+[3.028s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/package.bash'
+[3.028s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/rotate_odom/share/rotate_odom/package.zsh'
+[3.029s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/rotate_odom/share/colcon-core/packages/rotate_odom)
+[3.033s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_odom' for CMake module files
+[3.033s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/square_odom' returned '0': PYTHONPATH=/home/hashizume/experiment/build/square_odom/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_odom build --build-base /home/hashizume/experiment/build/square_odom/build install --record /home/hashizume/experiment/build/square_odom/install.log --single-version-externally-managed
+[3.034s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_odom' for CMake config files
+[3.034s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_odom/lib'
+[3.035s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_odom/bin'
+[3.035s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_odom/lib/pkgconfig/square_odom.pc'
+[3.035s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_odom/lib/python3.10/site-packages'
+[3.035s] Level 1:colcon.colcon_core.shell:create_environment_hook('square_odom', 'pythonpath')
+[3.035s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_odom/share/square_odom/hook/pythonpath.ps1'
+[3.036s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/square_odom/share/square_odom/hook/pythonpath.dsv'
+[3.036s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_odom/share/square_odom/hook/pythonpath.sh'
+[3.037s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_odom/bin'
+[3.037s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(square_odom)
+[3.037s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_odom/share/square_odom/package.ps1'
+[3.038s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/square_odom/share/square_odom/package.dsv'
+[3.038s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_odom/share/square_odom/package.sh'
+[3.039s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_odom/share/square_odom/package.bash'
+[3.039s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_odom/share/square_odom/package.zsh'
+[3.039s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/square_odom/share/colcon-core/packages/square_odom)
+[3.041s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_gradual' for CMake module files
+[3.042s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/square_gradual' returned '0': PYTHONPATH=/home/hashizume/experiment/build/square_gradual/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_gradual/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_gradual build --build-base /home/hashizume/experiment/build/square_gradual/build install --record /home/hashizume/experiment/build/square_gradual/install.log --single-version-externally-managed
+[3.042s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_gradual' for CMake config files
+[3.043s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_gradual/lib'
+[3.043s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_gradual/bin'
+[3.043s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_gradual/lib/pkgconfig/square_gradual.pc'
+[3.043s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_gradual/lib/python3.10/site-packages'
+[3.043s] Level 1:colcon.colcon_core.shell:create_environment_hook('square_gradual', 'pythonpath')
+[3.043s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_gradual/share/square_gradual/hook/pythonpath.ps1'
+[3.044s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/square_gradual/share/square_gradual/hook/pythonpath.dsv'
+[3.044s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_gradual/share/square_gradual/hook/pythonpath.sh'
+[3.044s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_gradual/bin'
+[3.044s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(square_gradual)
+[3.045s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_gradual/share/square_gradual/package.ps1'
+[3.045s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/square_gradual/share/square_gradual/package.dsv'
+[3.045s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_gradual/share/square_gradual/package.sh'
+[3.046s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_gradual/share/square_gradual/package.bash'
+[3.046s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_gradual/share/square_gradual/package.zsh'
+[3.046s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/square_gradual/share/colcon-core/packages/square_gradual)
+[3.048s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_vs' for CMake module files
+[3.048s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/square_vs' returned '0': PYTHONPATH=/home/hashizume/experiment/build/square_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/square_vs build --build-base /home/hashizume/experiment/build/square_vs/build install --record /home/hashizume/experiment/build/square_vs/install.log --single-version-externally-managed
+[3.049s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_vs' for CMake config files
+[3.049s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_vs/lib'
+[3.050s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_vs/bin'
+[3.050s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_vs/lib/pkgconfig/square_vs.pc'
+[3.050s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_vs/lib/python3.10/site-packages'
+[3.050s] Level 1:colcon.colcon_core.shell:create_environment_hook('square_vs', 'pythonpath')
+[3.050s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_vs/share/square_vs/hook/pythonpath.ps1'
+[3.050s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/square_vs/share/square_vs/hook/pythonpath.dsv'
+[3.051s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/square_vs/share/square_vs/hook/pythonpath.sh'
+[3.051s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/square_vs/bin'
+[3.051s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(square_vs)
+[3.051s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_vs/share/square_vs/package.ps1'
+[3.052s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/square_vs/share/square_vs/package.dsv'
+[3.052s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_vs/share/square_vs/package.sh'
+[3.053s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_vs/share/square_vs/package.bash'
+[3.053s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/square_vs/share/square_vs/package.zsh'
+[3.053s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/square_vs/share/colcon-core/packages/square_vs)
+[3.054s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/infra_enhancer' for CMake module files
+[3.055s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/infra_enhancer' returned '0': PYTHONPATH=/home/hashizume/experiment/build/infra_enhancer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/infra_enhancer build --build-base /home/hashizume/experiment/build/infra_enhancer/build install --record /home/hashizume/experiment/build/infra_enhancer/install.log --single-version-externally-managed install_data
+[3.055s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/infra_enhancer' for CMake config files
+[3.055s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/infra_enhancer/lib'
+[3.055s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/infra_enhancer/bin'
+[3.055s] Level 1:colcon.colcon_core.shell:create_environment_hook('infra_enhancer', 'path')
+[3.055s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/path.ps1'
+[3.056s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/path.dsv'
+[3.056s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/path.sh'
+[3.056s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/infra_enhancer/lib/pkgconfig/infra_enhancer.pc'
+[3.056s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages'
+[3.056s] Level 1:colcon.colcon_core.shell:create_environment_hook('infra_enhancer', 'pythonpath')
+[3.057s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/pythonpath.ps1'
+[3.057s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/pythonpath.dsv'
+[3.057s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/pythonpath.sh'
+[3.057s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/infra_enhancer/bin'
+[3.058s] Level 1:colcon.colcon_core.shell:create_environment_hook('infra_enhancer', 'pythonscriptspath')
+[3.058s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/pythonscriptspath.ps1'
+[3.058s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/pythonscriptspath.dsv'
+[3.058s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/hook/pythonscriptspath.sh'
+[3.058s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(infra_enhancer)
+[3.059s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/package.ps1'
+[3.059s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/package.dsv'
+[3.060s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/package.sh'
+[3.060s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/package.bash'
+[3.061s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/package.zsh'
+[3.061s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/infra_enhancer/share/colcon-core/packages/infra_enhancer)
+[3.062s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_vs' for CMake module files
+[3.063s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hashizume/experiment/src/forward_vs' returned '0': PYTHONPATH=/home/hashizume/experiment/build/forward_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/forward_vs build --build-base /home/hashizume/experiment/build/forward_vs/build install --record /home/hashizume/experiment/build/forward_vs/install.log --single-version-externally-managed
+[3.063s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_vs' for CMake config files
+[3.063s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_vs/lib'
+[3.063s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_vs/bin'
+[3.063s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_vs/lib/pkgconfig/forward_vs.pc'
+[3.064s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_vs/lib/python3.10/site-packages'
+[3.064s] Level 1:colcon.colcon_core.shell:create_environment_hook('forward_vs', 'pythonpath')
+[3.064s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_vs/share/forward_vs/hook/pythonpath.ps1'
+[3.064s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hashizume/experiment/install/forward_vs/share/forward_vs/hook/pythonpath.dsv'
+[3.064s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hashizume/experiment/install/forward_vs/share/forward_vs/hook/pythonpath.sh'
+[3.065s] Level 1:colcon.colcon_core.environment:checking '/home/hashizume/experiment/install/forward_vs/bin'
+[3.065s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(forward_vs)
+[3.065s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_vs/share/forward_vs/package.ps1'
+[3.065s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hashizume/experiment/install/forward_vs/share/forward_vs/package.dsv'
+[3.066s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_vs/share/forward_vs/package.sh'
+[3.066s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_vs/share/forward_vs/package.bash'
+[3.066s] INFO:colcon.colcon_core.shell:Creating package script '/home/hashizume/experiment/install/forward_vs/share/forward_vs/package.zsh'
+[3.067s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hashizume/experiment/install/forward_vs/share/colcon-core/packages/forward_vs)
+[3.067s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[3.067s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[3.067s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[3.067s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[3.073s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[3.073s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[3.073s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[3.089s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[3.089s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hashizume/experiment/install/local_setup.ps1'
+[3.090s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/hashizume/experiment/install/_local_setup_util_ps1.py'
+[3.091s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hashizume/experiment/install/setup.ps1'
+[3.092s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hashizume/experiment/install/local_setup.sh'
+[3.093s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/hashizume/experiment/install/_local_setup_util_sh.py'
+[3.093s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hashizume/experiment/install/setup.sh'
+[3.094s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hashizume/experiment/install/local_setup.bash'
+[3.095s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hashizume/experiment/install/setup.bash'
+[3.096s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hashizume/experiment/install/local_setup.zsh'
+[3.096s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hashizume/experiment/install/setup.zsh'

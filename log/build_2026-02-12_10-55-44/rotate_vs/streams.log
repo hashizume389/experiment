@@ -1,0 +1,20 @@
+[2.221s] Invoking command in '/home/hashizume/experiment/src/rotate_vs': PYTHONPATH=/home/hashizume/experiment/build/rotate_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_vs build --build-base /home/hashizume/experiment/build/rotate_vs/build install --record /home/hashizume/experiment/build/rotate_vs/install.log --single-version-externally-managed
+[2.444s] running egg_info
+[2.444s] writing ../../build/rotate_vs/rotate_vs.egg-info/PKG-INFO
+[2.445s] writing dependency_links to ../../build/rotate_vs/rotate_vs.egg-info/dependency_links.txt
+[2.445s] writing entry points to ../../build/rotate_vs/rotate_vs.egg-info/entry_points.txt
+[2.445s] writing requirements to ../../build/rotate_vs/rotate_vs.egg-info/requires.txt
+[2.445s] writing top-level names to ../../build/rotate_vs/rotate_vs.egg-info/top_level.txt
+[2.447s] reading manifest file '../../build/rotate_vs/rotate_vs.egg-info/SOURCES.txt'
+[2.447s] writing manifest file '../../build/rotate_vs/rotate_vs.egg-info/SOURCES.txt'
+[2.447s] running build
+[2.448s] running build_py
+[2.448s] running install
+[2.448s] running install_lib
+[2.450s] running install_egg_info
+[2.451s] removing '/home/hashizume/experiment/install/rotate_vs/lib/python3.10/site-packages/rotate_vs-0.0.0-py3.10.egg-info' (and everything under it)
+[2.452s] Copying ../../build/rotate_vs/rotate_vs.egg-info to /home/hashizume/experiment/install/rotate_vs/lib/python3.10/site-packages/rotate_vs-0.0.0-py3.10.egg-info
+[2.452s] running install_scripts
+[2.470s] Installing rotate_vs script to /home/hashizume/experiment/install/rotate_vs/lib/rotate_vs
+[2.471s] writing list of installed files to '/home/hashizume/experiment/build/rotate_vs/install.log'
+[2.535s] Invoked command in '/home/hashizume/experiment/src/rotate_vs' returned '0': PYTHONPATH=/home/hashizume/experiment/build/rotate_vs/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/hashizume/experiment/install/rotate_vs/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rotate_vs build --build-base /home/hashizume/experiment/build/rotate_vs/build install --record /home/hashizume/experiment/build/rotate_vs/install.log --single-version-externally-managed

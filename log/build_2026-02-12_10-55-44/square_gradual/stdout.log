@@ -1,0 +1,18 @@
+running egg_info
+writing ../../build/square_gradual/square_gradual.egg-info/PKG-INFO
+writing dependency_links to ../../build/square_gradual/square_gradual.egg-info/dependency_links.txt
+writing entry points to ../../build/square_gradual/square_gradual.egg-info/entry_points.txt
+writing requirements to ../../build/square_gradual/square_gradual.egg-info/requires.txt
+writing top-level names to ../../build/square_gradual/square_gradual.egg-info/top_level.txt
+reading manifest file '../../build/square_gradual/square_gradual.egg-info/SOURCES.txt'
+writing manifest file '../../build/square_gradual/square_gradual.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_egg_info
+removing '/home/hashizume/experiment/install/square_gradual/lib/python3.10/site-packages/square_gradual-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/square_gradual/square_gradual.egg-info to /home/hashizume/experiment/install/square_gradual/lib/python3.10/site-packages/square_gradual-0.0.0-py3.10.egg-info
+running install_scripts
+Installing square_gradual script to /home/hashizume/experiment/install/square_gradual/lib/square_gradual
+writing list of installed files to '/home/hashizume/experiment/build/square_gradual/install.log'

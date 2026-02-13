@@ -1,4 +1,4 @@
-"""InfraEnhancer ノード
+"""InfraEnhancer ノード（オールインワン版 — 後方互換）
 
 - 購読トピック:
   /camera/infra1/image_rect_raw  (sensor_msgs/msg/Image)
@@ -9,6 +9,7 @@
   /proc/infra1/image_enhanced
   /proc/infra2/image_enhanced
 
+分割ノード版（denoise_node / clahe_node / normalize_node）を推奨。
 ROS 2 (Humble/Iron/Jazzy) 対応
 """
 
@@ -16,7 +17,6 @@ from __future__ import annotations
 
 import rclpy
 from rclpy.node import Node
-from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
@@ -24,6 +24,8 @@ from cv_bridge import CvBridge, CvBridgeError
 import message_filters
 import numpy as np
 import cv2
+
+from .image_utils import QOS_IMAGE, to_mono8, mono8_to_msg
 
 
 class InfraEnhancer(Node):
@@ -57,29 +59,13 @@ class InfraEnhancer(Node):
         self.bilateral_sigmaColor = float(self.get_parameter('bilateral_sigmaColor').value)
         self.bilateral_sigmaSpace = float(self.get_parameter('bilateral_sigmaSpace').value)
 
-        # QoSプロファイル（rviz2と互換性を持たせるためRELIABLEを使用）
-        qos_pub = QoSProfile(
-            reliability=ReliabilityPolicy.RELIABLE,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=10,
-            durability=DurabilityPolicy.VOLATILE
-        )
-
         # パブリッシャー
-        self.pub1 = self.create_publisher(Image, '/proc/infra1/image_enhanced', qos_pub)
-        self.pub2 = self.create_publisher(Image, '/proc/infra2/image_enhanced', qos_pub)
-
-        # サブスクライバー用QoSプロファイル（カメラはRELIABLEで配信している）
-        qos_sub = QoSProfile(
-            reliability=ReliabilityPolicy.RELIABLE,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=10,
-            durability=DurabilityPolicy.VOLATILE
-        )
+        self.pub1 = self.create_publisher(Image, '/proc/infra1/image_enhanced', QOS_IMAGE)
+        self.pub2 = self.create_publisher(Image, '/proc/infra2/image_enhanced', QOS_IMAGE)
 
         # message_filtersによるサブスクライバー
-        self.sub1 = message_filters.Subscriber(self, Image, '/camera/infra1/image_rect_raw', qos_profile=qos_sub)
-        self.sub2 = message_filters.Subscriber(self, Image, '/camera/infra2/image_rect_raw', qos_profile=qos_sub)
+        self.sub1 = message_filters.Subscriber(self, Image, '/camera/infra1/image_rect_raw', qos_profile=QOS_IMAGE)
+        self.sub2 = message_filters.Subscriber(self, Image, '/camera/infra2/image_rect_raw', qos_profile=QOS_IMAGE)
 
         #左右画像のマッチング，タイムスタンプの比較でペアを形成
         self.sync = message_filters.ApproximateTimeSynchronizer(
@@ -97,12 +83,9 @@ class InfraEnhancer(Node):
             self.get_logger().error(f'Processing error: {e}')
             return
 
-        # 元のヘッダーを保持してImageメッセージに変換
         try:
-            out1 = self.bridge.cv2_to_imgmsg(proc1, encoding='mono8')
-            out1.header = img1_msg.header
-            out2 = self.bridge.cv2_to_imgmsg(proc2, encoding='mono8')
-            out2.header = img2_msg.header
+            out1 = mono8_to_msg(proc1, img1_msg.header, self.bridge)
+            out2 = mono8_to_msg(proc2, img2_msg.header, self.bridge)
         except CvBridgeError as e:
             self.get_logger().error(f'CvBridge conversion error: {e}')
             return
@@ -113,17 +96,7 @@ class InfraEnhancer(Node):
     #ROS固有の画像フォーマットをOpenCV形式に変換し，画像処理を行う
     def process_image_msg(self, img_msg: Image) -> np.ndarray:
         # OpenCV画像に変換（8bitグレースケール）
-        try:
-            # まずmono8として直接取得を試みる
-            cv_img = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding='mono8')
-        except CvBridgeError:
-            # フォールバック: passthroughで変換してから8bitに変換
-            raw = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding='passthrough')
-            if raw.ndim == 3:
-                # RGBの場合はグレースケールに変換
-                raw = cv2.cvtColor(raw, cv2.COLOR_BGR2GRAY)
-            # 0〜255に正規化してuint8に変換
-            cv_img = self._to_uint8(raw)
+        cv_img = to_mono8(img_msg, self.bridge)
 
         # ノイズ除去（Gaussian：全体的にぼかして砂嵐ノイズを除去 or Bilateral：エッジを維持したまま平滑化する）
         if self.denoise == 'gaussian':
@@ -146,18 +119,6 @@ class InfraEnhancer(Node):
 
         return cv_img
 
-    def _to_uint8(self, arr: np.ndarray) -> np.ndarray:
-        # 様々な画像型（float, uint16等）を効率的にuint8に変換
-        if arr.dtype == np.uint8:
-            return arr
-        arr = arr.astype(np.float32)
-        mn = float(np.nanmin(arr))
-        mx = float(np.nanmax(arr))
-        if mx <= mn:
-            return np.zeros(arr.shape, dtype=np.uint8)
-        # スケーリング
-        scaled = (arr - mn) * (255.0 / (mx - mn))
-        return np.clip(scaled, 0, 255).astype(np.uint8)
 
 
 def main(args=None):

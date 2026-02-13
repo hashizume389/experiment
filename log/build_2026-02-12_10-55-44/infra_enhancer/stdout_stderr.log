@@ -1,0 +1,41 @@
+running egg_info
+writing ../../build/infra_enhancer/infra_enhancer.egg-info/PKG-INFO
+writing dependency_links to ../../build/infra_enhancer/infra_enhancer.egg-info/dependency_links.txt
+writing entry points to ../../build/infra_enhancer/infra_enhancer.egg-info/entry_points.txt
+writing requirements to ../../build/infra_enhancer/infra_enhancer.egg-info/requires.txt
+writing top-level names to ../../build/infra_enhancer/infra_enhancer.egg-info/top_level.txt
+reading manifest file '../../build/infra_enhancer/infra_enhancer.egg-info/SOURCES.txt'
+writing manifest file '../../build/infra_enhancer/infra_enhancer.egg-info/SOURCES.txt'
+running build
+running build_py
+copying infra_enhancer/normalize_node.py -> /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer
+copying infra_enhancer/enhancer_node.py -> /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer
+copying infra_enhancer/clahe_node.py -> /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer
+copying infra_enhancer/image_utils.py -> /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer
+copying infra_enhancer/__init__.py -> /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer
+copying infra_enhancer/denoise_node.py -> /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer
+running install
+running install_lib
+copying /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer/normalize_node.py -> /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer
+copying /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer/enhancer_node.py -> /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer
+copying /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer/clahe_node.py -> /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer
+copying /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer/image_utils.py -> /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer
+copying /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer/__init__.py -> /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer
+copying /home/hashizume/experiment/build/infra_enhancer/build/lib/infra_enhancer/denoise_node.py -> /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer
+byte-compiling /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/normalize_node.py to normalize_node.cpython-310.pyc
+byte-compiling /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/enhancer_node.py to enhancer_node.cpython-310.pyc
+byte-compiling /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/clahe_node.py to clahe_node.cpython-310.pyc
+byte-compiling /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/image_utils.py to image_utils.cpython-310.pyc
+byte-compiling /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/denoise_node.py to denoise_node.cpython-310.pyc
+running install_data
+creating /home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/launch
+copying launch/infra_pipeline_launch.py -> /home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/launch
+running install_egg_info
+Copying ../../build/infra_enhancer/infra_enhancer.egg-info to /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer-0.1.0-py3.10.egg-info
+running install_scripts
+Installing clahe_node script to /home/hashizume/experiment/install/infra_enhancer/bin
+Installing denoise_node script to /home/hashizume/experiment/install/infra_enhancer/bin
+Installing infra_enhancer_node script to /home/hashizume/experiment/install/infra_enhancer/bin
+Installing normalize_node script to /home/hashizume/experiment/install/infra_enhancer/bin
+writing list of installed files to '/home/hashizume/experiment/build/infra_enhancer/install.log'
