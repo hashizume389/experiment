@@ -77,8 +77,11 @@ cd ~/experiment && source install/setup.bash
 ros2 run square_vs square_vs
 ```
 
-### Visual SLAMの設定
+### rosbagの記録
 ```bash
-640×480
-15FPS
+ros2 bag record -a -o ~/experiment/bag
+```
+### rosbagの再生
+```bash
+ros2 bag play ~/experiment/bag/rosbag2_2026_02_16-13_21_04
 ```
