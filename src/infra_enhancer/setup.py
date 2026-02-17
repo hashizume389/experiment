@@ -29,6 +29,8 @@ setup(
             'denoise_node   = infra_enhancer.denoise_node:main',
             'clahe_node     = infra_enhancer.clahe_node:main',
             'normalize_node = infra_enhancer.normalize_node:main',
+            # LDFE-SLAM Node
+            'ldfe_node      = infra_enhancer.ldfe_node:main',
         ],
     },
 )
