@@ -34,7 +34,7 @@ def generate_launch_description():
                 'clahe_clip_min': 1.0,
                 'clahe_clip_max': 5.0,
                 'gamma_min': 0.5,
-                'gamma_max': 1.0,
+                'gamma_max': 1.2,
             }],
         ),
 
@@ -53,7 +53,7 @@ def generate_launch_description():
                 'clahe_clip_min': 1.0,
                 'clahe_clip_max': 5.0,
                 'gamma_min': 0.5,
-                'gamma_max': 1.0,
+                'gamma_max': 1.2,
             }],
         ),
     ])

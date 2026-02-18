@@ -134,7 +134,7 @@ class LDFENode(Node):
         # ガンマ補正は計算コスト削減のため、Look Up Table (LUT) を使用します。
         # 式: output = ((input / 255) ^ (1/gamma)) * 255
         inv_gamma = 1.0 / current_gamma
-        table = np.array([((i / 255.0) ** inv_gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
+        table = np.array([((i / 255.0) ** current_gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
         img_enhanced = cv2.LUT(img_clahe, table)
         
         # デバッグ用: 補正状況を確認したい場合は以下のコメントを解除してください
