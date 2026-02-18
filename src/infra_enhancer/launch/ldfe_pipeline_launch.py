@@ -26,7 +26,7 @@ def generate_launch_description():
             name='ldfe_infra1',
             remappings=[
                 ('image_in',  '/camera/infra1/image_rect_raw'),
-                ('image_out', '/proc/infra1/image_enhanced'),
+                ('image_out', '/proc/infra1/image_ldfe'),
             ],
             parameters=[{
                 'brightness_dark': 50.0,
@@ -45,7 +45,7 @@ def generate_launch_description():
             name='ldfe_infra2',
             remappings=[
                 ('image_in',  '/camera/infra2/image_rect_raw'),
-                ('image_out', '/proc/infra2/image_enhanced'),
+                ('image_out', '/proc/infra2/image_ldfe'),
             ],
             parameters=[{
                 'brightness_dark': 50.0,
