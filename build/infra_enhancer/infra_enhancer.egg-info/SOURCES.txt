@@ -11,11 +11,13 @@ setup.py
 infra_enhancer/__init__.py
 infra_enhancer/clahe_node.py
 infra_enhancer/denoise_node.py
+infra_enhancer/edge_node.py
 infra_enhancer/enhancer_node.py
 infra_enhancer/image_utils.py
 infra_enhancer/ldfe_node.py
 infra_enhancer/normalize_node.py
 infra_enhancer/spike_node.py
+launch/edge_pipeline_launch.py
 launch/infra_pipeline_launch.py
 launch/ldfe_pipeline_launch.py
 launch/spike_pipeline_launch.py
