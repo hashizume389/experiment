@@ -17,6 +17,10 @@ infra_enhancer/image_utils.py
 infra_enhancer/ldfe_node.py
 infra_enhancer/normalize_node.py
 infra_enhancer/spike_node.py
+infra_enhancer/unsharp_node.py
+launch/bilateral_ldfe_launch.py
+launch/bilateral_ldfe_sobel_launch.py
+launch/bilateral_ldfe_unsharp_launch.py
 launch/edge_pipeline_launch.py
 launch/infra_pipeline_launch.py
 launch/ldfe_pipeline_launch.py

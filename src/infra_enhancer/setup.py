@@ -35,6 +35,8 @@ setup(
             'spike_node     = infra_enhancer.spike_node:main',
             # Edge Detection Node
             'edge_node      = infra_enhancer.edge_node:main',
+            # Unsharp Mask Node
+            'unsharp_node   = infra_enhancer.unsharp_node:main',
         ],
     },
 )

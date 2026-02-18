@@ -123,3 +123,16 @@ ros2 launch infra_enhancer infra_pipeline_launch.py clahe_clip:=3.0 clahe_tile:=
 # LDFE-SLAM 照明適応型前処理パイプライン（左右画像）
 ros2 launch infra_enhancer ldfe_pipeline_launch.py
 ```
+
+### 柿農園実験用パイプライン
+
+```bash
+# パイプライン1: バイラテラルフィルタ → LDFE
+ros2 launch infra_enhancer bilateral_ldfe_launch.py
+
+# パイプライン2: バイラテラルフィルタ → LDFE → アンシャープマスク
+ros2 launch infra_enhancer bilateral_ldfe_unsharp_launch.py
+
+# パイプライン3: バイラテラルフィルタ → LDFE → Sobel
+ros2 launch infra_enhancer bilateral_ldfe_sobel_launch.py
+```
