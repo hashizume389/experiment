@@ -13,7 +13,9 @@ infra_enhancer/clahe_node.py
 infra_enhancer/denoise_node.py
 infra_enhancer/enhancer_node.py
 infra_enhancer/image_utils.py
+infra_enhancer/ldfe_node.py
 infra_enhancer/normalize_node.py
 launch/infra_pipeline_launch.py
+launch/ldfe_pipeline_launch.py
 resource/infra_enhancer
 scripts/infra_enhancer_node
