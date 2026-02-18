@@ -31,6 +31,10 @@ setup(
             'normalize_node = infra_enhancer.normalize_node:main',
             # LDFE-SLAM Node
             'ldfe_node      = infra_enhancer.ldfe_node:main',
+            # Spike Filter Node
+            'spike_node     = infra_enhancer.spike_node:main',
+            # Edge Detection Node
+            'edge_node      = infra_enhancer.edge_node:main',
         ],
     },
 )

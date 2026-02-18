@@ -4,4 +4,5 @@ denoise_node = infra_enhancer.denoise_node:main
 infra_enhancer_node = infra_enhancer.enhancer_node:main
 ldfe_node = infra_enhancer.ldfe_node:main
 normalize_node = infra_enhancer.normalize_node:main
+spike_node = infra_enhancer.spike_node:main
 

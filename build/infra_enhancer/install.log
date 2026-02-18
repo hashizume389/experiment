@@ -1,4 +1,5 @@
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/normalize_node.py
+/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/spike_node.py
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/denoise_node.py
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/ldfe_node.py
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/clahe_node.py
@@ -6,6 +7,7 @@
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/image_utils.py
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/enhancer_node.py
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/__pycache__/normalize_node.cpython-310.pyc
+/home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/__pycache__/spike_node.cpython-310.pyc
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/__pycache__/denoise_node.cpython-310.pyc
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/__pycache__/ldfe_node.cpython-310.pyc
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer/__pycache__/clahe_node.cpython-310.pyc
@@ -15,6 +17,7 @@
 /home/hashizume/experiment/install/infra_enhancer/share/ament_index/resource_index/packages/infra_enhancer
 /home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/package.xml
 /home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/launch/ldfe_pipeline_launch.py
+/home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/launch/spike_pipeline_launch.py
 /home/hashizume/experiment/install/infra_enhancer/share/infra_enhancer/launch/infra_pipeline_launch.py
 /home/hashizume/experiment/install/infra_enhancer/lib/infra_enhancer/infra_enhancer_node
 /home/hashizume/experiment/install/infra_enhancer/lib/python3.10/site-packages/infra_enhancer-0.1.0-py3.10.egg-info/SOURCES.txt
@@ -28,3 +31,4 @@
 /home/hashizume/experiment/install/infra_enhancer/lib/infra_enhancer/denoise_node
 /home/hashizume/experiment/install/infra_enhancer/lib/infra_enhancer/ldfe_node
 /home/hashizume/experiment/install/infra_enhancer/lib/infra_enhancer/normalize_node
+/home/hashizume/experiment/install/infra_enhancer/lib/infra_enhancer/spike_node
