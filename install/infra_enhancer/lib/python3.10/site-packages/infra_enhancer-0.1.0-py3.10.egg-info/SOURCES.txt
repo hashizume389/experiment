@@ -13,6 +13,7 @@ infra_enhancer/clahe_node.py
 infra_enhancer/denoise_node.py
 infra_enhancer/edge_node.py
 infra_enhancer/enhancer_node.py
+infra_enhancer/feature_overlay_node.py
 infra_enhancer/image_utils.py
 infra_enhancer/ldfe_node.py
 infra_enhancer/normalize_node.py
@@ -22,6 +23,7 @@ launch/bilateral_ldfe_launch.py
 launch/bilateral_ldfe_sobel_launch.py
 launch/bilateral_ldfe_unsharp_launch.py
 launch/edge_pipeline_launch.py
+launch/feature_compare_launch.py
 launch/infra_pipeline_launch.py
 launch/ldfe_pipeline_launch.py
 launch/spike_pipeline_launch.py
