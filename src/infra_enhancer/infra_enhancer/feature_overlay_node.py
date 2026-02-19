@@ -1,30 +1,24 @@
 """FeatureOverlayNode — Visual SLAM 特徴点を画像上に投影・可視化するノード
 
 Isaac ROS Visual SLAM が配信する特徴点 (PointCloud2) を、
-カメラ画像上に投影して描画した画像を新しいトピックとして配信します。
+2系統のカメラ画像 (raw / enhanced) 上に投影して描画した画像を配信します。
 
 入力:
-  - image_in      (sensor_msgs/Image)       : カメラ画像 (mono8)
+  - image_in      (sensor_msgs/Image)       : raw カメラ画像 (mono8)
+  - image_in_2    (sensor_msgs/Image)       : 処理後カメラ画像 (mono8)
   - cloud_in      (sensor_msgs/PointCloud2)  : Visual SLAM の特徴点群
   - camera_info_in (sensor_msgs/CameraInfo)  : カメラ内部パラメータ
 
 出力:
-  - image_out     (sensor_msgs/Image)        : 特徴点を描画した画像 (bgr8)
+  - image_out     (sensor_msgs/Image)        : raw に特徴点を描画した画像 (bgr8)
+  - image_out_2   (sensor_msgs/Image)        : 処理後に特徴点を描画した画像 (bgr8)
   - feature_count (std_msgs/Int32)           : 投影された特徴点数
 
 処理フロー:
   1. PointCloud2 の 3D 座標を TF でカメラ光学フレームに変換
   2. カメラの内部パラメータ (K 行列) で 2D 画像平面に投影
-  3. 画像範囲内の点をマーカーとして描画
+  3. 画像範囲内の点をマーカーとして両方の画像に描画
   4. 結果を配信
-
-使用例:
-  ros2 run infra_enhancer feature_overlay_node \\
-      --ros-args \\
-      -r image_in:=/camera/infra1/image_rect_raw \\
-      -r cloud_in:=/visual_slam/vis/observations_cloud \\
-      -r camera_info_in:=/camera/infra1/camera_info \\
-      -r image_out:=/debug/infra1/slam_features
 """
 
 from __future__ import annotations
@@ -81,23 +75,25 @@ class FeatureOverlayNode(Node):
             CameraInfo, 'camera_info_in', self._cb_camera_info, 10
         )
 
-        # ─── 画像 + PointCloud2 の同期購読 ────────────────────────
-        self.sub_image = message_filters.Subscriber(self, Image, 'image_in')
+        # ─── 画像 (2系統) + PointCloud2 の同期購読 ──────────────────
+        self.sub_image_raw = message_filters.Subscriber(self, Image, 'image_in')
+        self.sub_image_enh = message_filters.Subscriber(self, Image, 'image_in_2')
         self.sub_cloud = message_filters.Subscriber(self, PointCloud2, 'cloud_in')
 
         self.sync = message_filters.ApproximateTimeSynchronizer(
-            [self.sub_image, self.sub_cloud],
+            [self.sub_image_raw, self.sub_image_enh, self.sub_cloud],
             queue_size=10,
             slop=sync_slop,
         )
         self.sync.registerCallback(self._cb_sync)
 
         # ─── Publisher ───────────────────────────────────────────
-        self.pub_image = self.create_publisher(Image, 'image_out', QOS_IMAGE)
+        self.pub_image_raw = self.create_publisher(Image, 'image_out', QOS_IMAGE)
+        self.pub_image_enh = self.create_publisher(Image, 'image_out_2', QOS_IMAGE)
         self.pub_count = self.create_publisher(Int32, 'feature_count', 10)
 
         self.get_logger().info(
-            f'FeatureOverlayNode started — color=BGR{self.marker_color}, '
+            f'FeatureOverlayNode started (dual image) — color=BGR{self.marker_color}, '
             f'radius={self.marker_radius}, sync_slop={sync_slop}s'
         )
 
@@ -111,14 +107,15 @@ class FeatureOverlayNode(Node):
         self.img_height = msg.height
 
     # ─── 同期コールバック ─────────────────────────────────────────
-    def _cb_sync(self, img_msg: Image, cloud_msg: PointCloud2):
+    def _cb_sync(self, img_raw_msg: Image, img_enh_msg: Image, cloud_msg: PointCloud2):
         if self.camera_matrix is None:
             self.get_logger().warn('CameraInfo not yet received, skipping', throttle_duration_sec=2.0)
             return
 
-        # 1. 画像を取得
+        # 1. 両方の画像を取得
         try:
-            gray = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding='mono8')
+            gray_raw = self.bridge.imgmsg_to_cv2(img_raw_msg, desired_encoding='mono8')
+            gray_enh = self.bridge.imgmsg_to_cv2(img_enh_msg, desired_encoding='mono8')
         except Exception as e:
             self.get_logger().error(f'Image conversion error: {e}')
             return
@@ -127,13 +124,15 @@ class FeatureOverlayNode(Node):
         points_3d = self._read_pointcloud2(cloud_msg)
         if points_3d is None or len(points_3d) == 0:
             # 特徴点なしでもそのまま画像を配信
-            canvas = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
-            self._put_text(canvas, 0)
-            self._publish(canvas, img_msg.header, 0)
+            canvas_raw = cv2.cvtColor(gray_raw, cv2.COLOR_GRAY2BGR)
+            canvas_enh = cv2.cvtColor(gray_enh, cv2.COLOR_GRAY2BGR)
+            self._put_text(canvas_raw, 0)
+            self._put_text(canvas_enh, 0)
+            self._publish(canvas_raw, canvas_enh, img_raw_msg.header, img_enh_msg.header, 0)
             return
 
         # 3. TF でカメラ光学フレームに変換
-        camera_frame = img_msg.header.frame_id
+        camera_frame = img_raw_msg.header.frame_id
         cloud_frame = cloud_msg.header.frame_id
 
         if camera_frame and cloud_frame and camera_frame != cloud_frame:
@@ -157,22 +156,25 @@ class FeatureOverlayNode(Node):
         points_2d = self._project_to_image(points_3d)
 
         # 5. 画像範囲内の点だけをフィルタ
-        h, w = gray.shape[:2]
+        h, w = gray_raw.shape[:2]
         valid_mask = (
             (points_2d[:, 0] >= 0) & (points_2d[:, 0] < w) &
             (points_2d[:, 1] >= 0) & (points_2d[:, 1] < h)
         )
         visible_points = points_2d[valid_mask]
+        count = len(visible_points)
 
-        # 6. 描画
-        canvas = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+        # 6. 両方の画像に同じ特徴点を描画
+        canvas_raw = cv2.cvtColor(gray_raw, cv2.COLOR_GRAY2BGR)
+        canvas_enh = cv2.cvtColor(gray_enh, cv2.COLOR_GRAY2BGR)
         for pt in visible_points:
             x, y = int(pt[0]), int(pt[1])
-            cv2.circle(canvas, (x, y), self.marker_radius, self.marker_color, -1)
+            cv2.circle(canvas_raw, (x, y), self.marker_radius, self.marker_color, -1)
+            cv2.circle(canvas_enh, (x, y), self.marker_radius, self.marker_color, -1)
 
-        count = len(visible_points)
-        self._put_text(canvas, count)
-        self._publish(canvas, img_msg.header, count)
+        self._put_text(canvas_raw, count)
+        self._put_text(canvas_enh, count)
+        self._publish(canvas_raw, canvas_enh, img_raw_msg.header, img_enh_msg.header, count)
 
     # ─── PointCloud2 パーサー ─────────────────────────────────────
     def _read_pointcloud2(self, msg: PointCloud2) -> np.ndarray | None:
@@ -265,11 +267,16 @@ class FeatureOverlayNode(Node):
         cv2.putText(canvas, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
                     0.8, (0, 255, 255), 2, cv2.LINE_AA)
 
-    def _publish(self, canvas: np.ndarray, header, count: int):
-        """描画済み画像と特徴点数を配信する。"""
-        out_msg = self.bridge.cv2_to_imgmsg(canvas, encoding='bgr8')
-        out_msg.header = header
-        self.pub_image.publish(out_msg)
+    def _publish(self, canvas_raw: np.ndarray, canvas_enh: np.ndarray,
+                header_raw, header_enh, count: int):
+        """描画済み画像 (raw / enhanced) と特徴点数を配信する。"""
+        out_raw = self.bridge.cv2_to_imgmsg(canvas_raw, encoding='bgr8')
+        out_raw.header = header_raw
+        self.pub_image_raw.publish(out_raw)
+
+        out_enh = self.bridge.cv2_to_imgmsg(canvas_enh, encoding='bgr8')
+        out_enh.header = header_enh
+        self.pub_image_enh.publish(out_enh)
 
         count_msg = Int32()
         count_msg.data = count
