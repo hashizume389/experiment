@@ -17,7 +17,7 @@ sudo apt-get update
 ```
 
 ```bash
-sudo rosdep update && rosdep install --from-paths ${ISAAC_ROS_WS}/src/isaac_ros_visual_slam/isaac_ros_visual_slam --ignore-src -y
+rosdep update && rosdep install --from-paths ${ISAAC_ROS_WS}/src/isaac_ros_visual_slam/isaac_ros_visual_slam --ignore-src -y
 ```
 ### 環境の有効化
 
@@ -31,10 +31,43 @@ source install/setup.bash
 rs-enumerate-devices --compact
 ```
 
-### Visual SLAMの起動
+### Visual SLAMの起動（通常モード）
 
 ```bash
 ros2 launch isaac_ros_visual_slam isaac_ros_visual_slam_realsense.launch.py
+```
+
+### Visual SLAM — 録画モード（カメラのみ、SLAMなし）
+
+```bash
+ros2 launch isaac_ros_visual_slam isaac_ros_visual_slam_realsense.launch.py mode:=record
+```
+
+### Visual SLAM — 再生モード（SLAMのみ、カメラなし）
+
+```bash
+ros2 launch isaac_ros_visual_slam isaac_ros_visual_slam_realsense.launch.py mode:=playback
+```
+
+### rosbagの記録（カメラトピック）
+
+録画モード中に別ターミナルで実行する。
+
+```bash
+ros2 bag record -o ~/experiment/bag/my_recording \
+  /camera/camera/infra1/image_rect_raw \
+  /camera/camera/infra1/camera_info \
+  /camera/camera/infra2/image_rect_raw \
+  /camera/camera/infra2/camera_info \
+  /tf_static
+```
+
+### rosbagの再生（Visual SLAM用）
+
+再生モード中に別ターミナルで実行する。
+
+```bash
+ros2 bag play ~/experiment/bag/my_recording
 ```
 
 ## ローカル
