@@ -25,7 +25,7 @@ def generate_launch_description():
             executable='ldfe_node',  # setup.py で設定するエントリポイント名
             name='ldfe_infra1',
             remappings=[
-                ('image_in',  '/camera/infra1/image_rect_raw'),
+                ('image_in',  '/camera/camera/infra1/image_rect_raw'),
                 ('image_out', '/proc/infra1/image_ldfe'),
             ],
             parameters=[{
@@ -44,7 +44,7 @@ def generate_launch_description():
             executable='ldfe_node',
             name='ldfe_infra2',
             remappings=[
-                ('image_in',  '/camera/infra2/image_rect_raw'),
+                ('image_in',  '/camera/camera/infra2/image_rect_raw'),
                 ('image_out', '/proc/infra2/image_ldfe'),
             ],
             parameters=[{

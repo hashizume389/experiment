@@ -40,10 +40,10 @@ def generate_launch_description():
             executable='feature_overlay_node',
             name='feature_overlay_slam',
             remappings=[
-                ('image_in',       '/camera/infra1/image_rect_raw'),
+                ('image_in',       '/camera/camera/infra1/image_rect_raw'),
                 ('image_in_2',     '/proc/infra1/image_ldfe'),
                 ('cloud_in',       '/visual_slam/vis/observations_cloud'),
-                ('camera_info_in', '/camera/infra1/camera_info'),
+                ('camera_info_in', '/camera/camera/infra1/camera_info'),
                 ('image_out',      '/debug/infra1/slam_features_raw'),
                 ('image_out_2',    '/debug/infra1/slam_features_enhanced'),
                 ('feature_count',  '/debug/infra1/feature_count'),

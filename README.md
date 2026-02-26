@@ -54,7 +54,7 @@ ros2 launch isaac_ros_visual_slam isaac_ros_visual_slam_realsense.launch.py mode
 録画モード中に別ターミナルで実行する。
 
 ```bash
-ros2 bag record -o ~/experiment/bag/my_recording \
+ros2 bag record  \
   /camera/camera/infra1/image_rect_raw \
   /camera/camera/infra1/camera_info \
   /camera/camera/infra2/image_rect_raw \
@@ -67,7 +67,7 @@ ros2 bag record -o ~/experiment/bag/my_recording \
 再生モード中に別ターミナルで実行する。
 
 ```bash
-ros2 bag play ~/experiment/bag/my_recording
+ros2 bag play ~/experiment/bag
 ```
 
 ## ローカル
