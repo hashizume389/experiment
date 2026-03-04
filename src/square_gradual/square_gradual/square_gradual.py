@@ -18,7 +18,7 @@ class MoveSquareGradualNode(Node):
         super().__init__('move_square_gradual_node')
         
         # ▼▼▼ 設定パラメータ ▼▼▼
-        self.target_distance_ = 2.0         # 1辺の長さ (m)
+        self.target_distance_ = 4.0         # 1辺の長さ (m)
         self.target_angle_ = -math.pi / 2.0 # 回転角度 (rad) (-90度: 時計回り)
         self.rotation_tolerance_ = 0.00     # 回転の許容誤差 (rad)
         self.max_loops_ = 4                 # 正方形なので4辺

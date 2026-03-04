@@ -6,6 +6,7 @@ from geometry_msgs.msg import Twist
 import math
 import csv
 import datetime
+import os
 
 class MoveSquareGradualNode(Node):
     """
@@ -17,7 +18,7 @@ class MoveSquareGradualNode(Node):
         super().__init__('move_square_gradual_node')
         
         # ▼▼▼ 設定パラメータ ▼▼▼
-        self.target_distance_ = 2.0         # 1辺の長さ (m)
+        self.target_distance_ = 4.0         # 1辺の長さ (m)
         self.target_angle_ = -math.pi / 2.0 # 回転角度 (rad) (-90度: 時計回り)
         self.rotation_tolerance_ = 0.00     # 回転の許容誤差 (rad)
         self.max_loops_ = 4                 # 正方形なので4辺
@@ -70,7 +71,9 @@ class MoveSquareGradualNode(Node):
         self.csv_filename_ = ""
         try:
             now = datetime.datetime.now()
-            self.csv_filename_ = f'square_gradual_log_{now.strftime("%Y%m%d_%H%M%S")}.csv'
+            log_dir = 'results'
+            os.makedirs(log_dir, exist_ok=True)
+            self.csv_filename_ = os.path.join(log_dir, f'square_gradual_log_{now.strftime("%Y%m%d_%H%M%S")}.csv')
             self.csv_file_ = open(self.csv_filename_, 'w', newline='', encoding='utf-8')
             self.csv_writer_ = csv.writer(self.csv_file_)
             
