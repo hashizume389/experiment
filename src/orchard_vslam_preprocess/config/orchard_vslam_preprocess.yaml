@@ -1,0 +1,25 @@
+orchard_vslam_preprocess_node:
+  ros__parameters:
+    use_gamma: true
+    gamma: 0.8
+    use_clahe: true
+    clahe_clip_limit: 2.0
+    clahe_tile_grid_size: 8
+
+    w_sobel: 0.35
+    w_laplacian: 0.20
+    w_variance: 0.20
+    w_temporal: 0.20
+    w_top: 0.15
+
+    top_penalty_ratio: 0.30
+    min_intensity_weight: 0.35
+    mask_power: 1.0
+    reliability_blur_kernel_size: 3
+    local_variance_kernel_size: 9
+
+    grid_rows: 6
+    grid_cols: 8
+    max_keypoints_per_cell: 30
+    orb_nfeatures: 1500
+    log_interval: 30
