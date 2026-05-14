@@ -12,19 +12,26 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
+find_package(image_transport REQUIRED)
 find_package(message_filters REQUIRED)
-find_package(OpenCV REQUIRED)
 
-include_directories(include)
+if(DEFINED OpenCV_CONFIG_PATH AND EXISTS "${OpenCV_CONFIG_PATH}")
+  set(OpenCV_DIR "${OpenCV_CONFIG_PATH}" CACHE PATH "OpenCV config path from cv_bridge" FORCE)
+endif()
+
+find_package(OpenCV REQUIRED COMPONENTS core features2d imgproc)
 
 add_executable(orchard_vslam_preprocess_node
   src/orchard_vslam_preprocess_node.cpp
 )
 
+target_compile_features(orchard_vslam_preprocess_node PUBLIC cxx_std_17)
+
 ament_target_dependencies(orchard_vslam_preprocess_node
   rclcpp
   sensor_msgs
   cv_bridge
+  image_transport
   message_filters
 )
 

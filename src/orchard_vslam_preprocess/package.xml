@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>orchard_vslam_preprocess</name>
-  <version>0.0.1</version>
-  <description>Lightweight stereo image preprocessing and reliability mapping for orchard Visual SLAM.</description>
-  <maintainer email="you@example.com">Your Name</maintainer>
+  <version>0.0.0</version>
+  <description>果樹園向け Visual SLAM 用ステレオ前処理ノード</description>
+  <maintainer email="AE1212@nara.kosen-ac.jp">Takayuki Hashizume</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -11,13 +12,12 @@
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
   <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
   <depend>message_filters</depend>
+  <depend>opencv</depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>ament_index_python</exec_depend>
-
-  <build_depend>opencv</build_depend>
-  <exec_depend>opencv</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
