@@ -1,3 +1,0 @@
-[console_scripts]
-square_vs = square_vs.square_vs:main
-

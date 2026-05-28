@@ -1,3 +1,0 @@
-[console_scripts]
-forward_odom = forward_odom.forward_odom:main
-

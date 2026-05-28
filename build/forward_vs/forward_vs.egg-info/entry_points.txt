@@ -1,3 +1,0 @@
-[console_scripts]
-forward_vs = forward_vs.forward_vs:main
-
