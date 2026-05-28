@@ -1,5 +1,7 @@
 results/
 bag/
+.venv/
+MH_01_easy_ros2/
 
 # ROS 2
 build/
