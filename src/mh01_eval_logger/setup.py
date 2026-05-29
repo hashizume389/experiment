@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'mh01_eval_logger = mh01_eval_logger.mh01_eval_logger:main',
+            'mh01_metrics = mh01_eval_logger.mh01_metrics_node:main',
         ],
     },
 )

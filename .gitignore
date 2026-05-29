@@ -6,8 +6,6 @@ MH_01_easy_ros2/
 MH_01_easy_ros2_with_camera_info/
 /config/
 # ROS 2
-
-MH_01_easy_ros2_with_camera_info/
 build/
 install/
 log/
