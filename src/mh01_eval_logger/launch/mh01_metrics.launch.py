@@ -36,6 +36,16 @@ def generate_launch_description():
             description='Skip samples whose ground truth match is farther than this value.',
         ),
         DeclareLaunchArgument(
+            'segment_end_sec',
+            default_value='50.0',
+            description='Also evaluate the initial segment ending at this elapsed time.',
+        ),
+        DeclareLaunchArgument(
+            'jump_threshold_m',
+            default_value='0.5',
+            description='Report odometry steps larger than this value as likely jumps.',
+        ),
+        DeclareLaunchArgument(
             'plot',
             default_value='true',
             description='Whether to save a trajectory/error PNG plot.',
@@ -55,6 +65,14 @@ def generate_launch_description():
                 ),
                 'max_match_dt_sec': ParameterValue(
                     LaunchConfiguration('max_match_dt_sec'),
+                    value_type=float,
+                ),
+                'segment_end_sec': ParameterValue(
+                    LaunchConfiguration('segment_end_sec'),
+                    value_type=float,
+                ),
+                'jump_threshold_m': ParameterValue(
+                    LaunchConfiguration('jump_threshold_m'),
                     value_type=float,
                 ),
                 'plot': ParameterValue(

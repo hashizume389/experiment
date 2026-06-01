@@ -22,6 +22,7 @@ class RelativeError:
 
 @dataclass(frozen=True)
 class EvaluationResult:
+    label: str
     sample_count: int
     relative_pair_count: int
     avg_rte_percent: float
@@ -30,9 +31,25 @@ class EvaluationResult:
     mean_ape_m: float
     median_ape_m: float
     max_ape_m: float
+    rmse_x_m: float
+    rmse_y_m: float
+    rmse_z_m: float
+    mean_abs_x_m: float
+    mean_abs_y_m: float
+    mean_abs_z_m: float
+    max_abs_x_m: float
+    max_abs_y_m: float
+    max_abs_z_m: float
     trajectory_length_m: float
+
+
+@dataclass(frozen=True)
+class MetricsOutputs:
+    results: list[EvaluationResult]
     output_summary_csv: Path
     output_plot_png: Optional[Path]
+    jump_count: int
+    first_jump_sec: Optional[float]
 
 
 class Mh01MetricsNode(Node):
@@ -50,6 +67,8 @@ class Mh01MetricsNode(Node):
         self.declare_parameter('output_dir', '/home/hashizume/experiment/results')
         self.declare_parameter('relative_window_sec', 1.0)
         self.declare_parameter('max_match_dt_sec', 0.5)
+        self.declare_parameter('segment_end_sec', 50.0)
+        self.declare_parameter('jump_threshold_m', 0.5)
         self.declare_parameter('plot', True)
 
         ground_truth_csv = Path(
@@ -59,17 +78,21 @@ class Mh01MetricsNode(Node):
         output_dir = Path(str(self.get_parameter('output_dir').value)).expanduser()
         relative_window_sec = float(self.get_parameter('relative_window_sec').value)
         max_match_dt_sec = float(self.get_parameter('max_match_dt_sec').value)
+        segment_end_sec = float(self.get_parameter('segment_end_sec').value)
+        jump_threshold_m = float(self.get_parameter('jump_threshold_m').value)
         plot = bool(self.get_parameter('plot').value)
 
-        result = self.evaluate(
+        outputs = self.evaluate(
             ground_truth_csv=ground_truth_csv,
             eval_log_csv=eval_log_csv,
             output_dir=output_dir,
             relative_window_sec=relative_window_sec,
             max_match_dt_sec=max_match_dt_sec,
+            segment_end_sec=segment_end_sec,
+            jump_threshold_m=jump_threshold_m,
             plot=plot,
         )
-        self.log_result(result)
+        self.log_result(outputs)
 
     def evaluate(
         self,
@@ -78,8 +101,10 @@ class Mh01MetricsNode(Node):
         output_dir: Path,
         relative_window_sec: float,
         max_match_dt_sec: float,
+        segment_end_sec: float,
+        jump_threshold_m: float,
         plot: bool,
-    ) -> EvaluationResult:
+    ) -> MetricsOutputs:
         ground_truth = GroundTruthTrack.from_csv(ground_truth_csv)
         timestamps_ns, odom_points, gt_points = self.load_trajectories(
             eval_log_csv,
@@ -87,9 +112,80 @@ class Mh01MetricsNode(Node):
             max_match_dt_sec,
         )
 
+        full_result, aligned_odom_points, ape_errors = self.compute_segment_result(
+            'full',
+            timestamps_ns,
+            odom_points,
+            gt_points,
+            relative_window_sec,
+        )
+        results = [full_result]
+
+        segment_mask = self.segment_mask(timestamps_ns, segment_end_sec)
+        if int(np.count_nonzero(segment_mask)) >= 3:
+            segment_result, _, _ = self.compute_segment_result(
+                f'first_{segment_end_sec:g}s',
+                timestamps_ns[segment_mask],
+                odom_points[segment_mask],
+                gt_points[segment_mask],
+                relative_window_sec,
+            )
+            results.append(segment_result)
+        else:
+            self.get_logger().warn(
+                f'segment_end_sec={segment_end_sec:g}s has fewer than 3 samples'
+            )
+
+        jumps = self.detect_odometry_jumps(timestamps_ns, odom_points, gt_points, jump_threshold_m)
+        first_jump_sec = jumps[0][0] if jumps else None
+
+        output_dir.mkdir(parents=True, exist_ok=True)
+        summary_csv = output_dir / f'{eval_log_csv.stem}_metrics_summary.csv'
+        plot_png = output_dir / f'{eval_log_csv.stem}_metrics_plot.png' if plot else None
+
+        outputs = MetricsOutputs(
+            results=results,
+            output_summary_csv=summary_csv,
+            output_plot_png=plot_png,
+            jump_count=len(jumps),
+            first_jump_sec=first_jump_sec,
+        )
+        self.write_summary(
+            outputs,
+            eval_log_csv,
+            ground_truth_csv,
+            relative_window_sec,
+            segment_end_sec,
+            jump_threshold_m,
+        )
+
+        if plot_png is not None:
+            self.write_plot(
+                plot_png,
+                timestamps_ns,
+                odom_points,
+                aligned_odom_points,
+                gt_points,
+                ape_errors,
+                outputs,
+                segment_end_sec,
+            )
+
+        return outputs
+
+    def compute_segment_result(
+        self,
+        label: str,
+        timestamps_ns: np.ndarray,
+        odom_points: np.ndarray,
+        gt_points: np.ndarray,
+        relative_window_sec: float,
+    ) -> tuple[EvaluationResult, np.ndarray, np.ndarray]:
         aligned_odom_points, _, _ = self.align_rigid(odom_points, gt_points)
-        ape_errors = np.linalg.norm(aligned_odom_points - gt_points, axis=1)
-        rmse_ape = float(math.sqrt(np.mean(ape_errors * ape_errors)))
+        component_errors = aligned_odom_points - gt_points
+        ape_errors = np.linalg.norm(component_errors, axis=1)
+        squared_component_errors = component_errors * component_errors
+        abs_component_errors = np.abs(component_errors)
         relative_errors = self.compute_relative_errors(
             timestamps_ns,
             aligned_odom_points,
@@ -97,40 +193,28 @@ class Mh01MetricsNode(Node):
             relative_window_sec,
         )
 
-        avg_rte = float(np.mean([err.rte_percent for err in relative_errors]))
-        avg_re = float(np.mean([err.re_deg for err in relative_errors]))
-        trajectory_length = self.path_length(gt_points)
-
-        output_dir.mkdir(parents=True, exist_ok=True)
-        summary_csv = output_dir / f'{eval_log_csv.stem}_metrics_summary.csv'
-        plot_png = output_dir / f'{eval_log_csv.stem}_metrics_plot.png' if plot else None
-
         result = EvaluationResult(
+            label=label,
             sample_count=len(odom_points),
             relative_pair_count=len(relative_errors),
-            avg_rte_percent=avg_rte,
-            avg_re_deg=avg_re,
-            rmse_ape_m=rmse_ape,
+            avg_rte_percent=float(np.mean([err.rte_percent for err in relative_errors])),
+            avg_re_deg=float(np.mean([err.re_deg for err in relative_errors])),
+            rmse_ape_m=float(math.sqrt(np.mean(ape_errors * ape_errors))),
             mean_ape_m=float(np.mean(ape_errors)),
             median_ape_m=float(np.median(ape_errors)),
             max_ape_m=float(np.max(ape_errors)),
-            trajectory_length_m=trajectory_length,
-            output_summary_csv=summary_csv,
-            output_plot_png=plot_png,
+            rmse_x_m=float(math.sqrt(np.mean(squared_component_errors[:, 0]))),
+            rmse_y_m=float(math.sqrt(np.mean(squared_component_errors[:, 1]))),
+            rmse_z_m=float(math.sqrt(np.mean(squared_component_errors[:, 2]))),
+            mean_abs_x_m=float(np.mean(abs_component_errors[:, 0])),
+            mean_abs_y_m=float(np.mean(abs_component_errors[:, 1])),
+            mean_abs_z_m=float(np.mean(abs_component_errors[:, 2])),
+            max_abs_x_m=float(np.max(abs_component_errors[:, 0])),
+            max_abs_y_m=float(np.max(abs_component_errors[:, 1])),
+            max_abs_z_m=float(np.max(abs_component_errors[:, 2])),
+            trajectory_length_m=self.path_length(gt_points),
         )
-        self.write_summary(result, eval_log_csv, ground_truth_csv, relative_window_sec)
-
-        if plot_png is not None:
-            self.write_plot(
-                plot_png,
-                timestamps_ns,
-                aligned_odom_points,
-                gt_points,
-                ape_errors,
-                result,
-            )
-
-        return result
+        return result, aligned_odom_points, ape_errors
 
     def load_trajectories(
         self,
@@ -240,41 +324,92 @@ class Mh01MetricsNode(Node):
         return errors
 
     @staticmethod
+    def segment_mask(timestamps_ns: np.ndarray, segment_end_sec: float) -> np.ndarray:
+        elapsed_sec = (timestamps_ns - timestamps_ns[0]) * 1e-9
+        return elapsed_sec <= segment_end_sec
+
+    @staticmethod
+    def detect_odometry_jumps(
+        timestamps_ns: np.ndarray,
+        odom_points: np.ndarray,
+        gt_points: np.ndarray,
+        threshold_m: float,
+    ) -> list[tuple[float, float, float]]:
+        jumps: list[tuple[float, float, float]] = []
+        odom_steps = np.linalg.norm(np.diff(odom_points, axis=0), axis=1)
+        gt_steps = np.linalg.norm(np.diff(gt_points, axis=0), axis=1)
+        elapsed_sec = (timestamps_ns[1:] - timestamps_ns[0]) * 1e-9
+        for time_sec, odom_step, gt_step in zip(elapsed_sec, odom_steps, gt_steps):
+            if odom_step > threshold_m or abs(odom_step - gt_step) > threshold_m:
+                jumps.append((float(time_sec), float(odom_step), float(gt_step)))
+        return jumps
+
+    @staticmethod
     def path_length(points: np.ndarray) -> float:
         deltas = np.diff(points, axis=0)
         return float(np.sum(np.linalg.norm(deltas, axis=1)))
 
     @staticmethod
     def write_summary(
-        result: EvaluationResult,
+        outputs: MetricsOutputs,
         eval_log_csv: Path,
         ground_truth_csv: Path,
         relative_window_sec: float,
+        segment_end_sec: float,
+        jump_threshold_m: float,
     ) -> None:
-        with result.output_summary_csv.open('w', newline='', encoding='utf-8') as csv_file:
+        with outputs.output_summary_csv.open('w', newline='', encoding='utf-8') as csv_file:
             writer = csv.writer(csv_file)
-            writer.writerow(['metric', 'value', 'unit'])
-            writer.writerow(['ground_truth_csv', str(ground_truth_csv), 'path'])
-            writer.writerow(['eval_log_csv', str(eval_log_csv), 'path'])
-            writer.writerow(['sample_count', result.sample_count, 'count'])
-            writer.writerow(['relative_window_sec', relative_window_sec, 's'])
-            writer.writerow(['relative_pair_count', result.relative_pair_count, 'count'])
-            writer.writerow(['avgRTE', result.avg_rte_percent, '%'])
-            writer.writerow(['avgRE', result.avg_re_deg, 'deg'])
-            writer.writerow(['RMSE_APE', result.rmse_ape_m, 'm'])
-            writer.writerow(['mean_APE', result.mean_ape_m, 'm'])
-            writer.writerow(['median_APE', result.median_ape_m, 'm'])
-            writer.writerow(['max_APE', result.max_ape_m, 'm'])
-            writer.writerow(['gt_trajectory_length', result.trajectory_length_m, 'm'])
+            writer.writerow(['label', 'metric', 'value', 'unit'])
+            writer.writerow(['input', 'ground_truth_csv', str(ground_truth_csv), 'path'])
+            writer.writerow(['input', 'eval_log_csv', str(eval_log_csv), 'path'])
+            writer.writerow(['config', 'relative_window_sec', relative_window_sec, 's'])
+            writer.writerow(['config', 'segment_end_sec', segment_end_sec, 's'])
+            writer.writerow(['config', 'jump_threshold_m', jump_threshold_m, 'm'])
+            writer.writerow(['diagnostic', 'odometry_jump_count', outputs.jump_count, 'count'])
+            if outputs.first_jump_sec is not None:
+                writer.writerow(['diagnostic', 'first_odometry_jump_sec', outputs.first_jump_sec, 's'])
+
+            for result in outputs.results:
+                writer.writerow([result.label, 'sample_count', result.sample_count, 'count'])
+                writer.writerow([
+                    result.label,
+                    'relative_pair_count',
+                    result.relative_pair_count,
+                    'count',
+                ])
+                writer.writerow([result.label, 'avgRTE', result.avg_rte_percent, '%'])
+                writer.writerow([result.label, 'avgRE', result.avg_re_deg, 'deg'])
+                writer.writerow([result.label, 'RMSE_APE', result.rmse_ape_m, 'm'])
+                writer.writerow([result.label, 'mean_APE', result.mean_ape_m, 'm'])
+                writer.writerow([result.label, 'median_APE', result.median_ape_m, 'm'])
+                writer.writerow([result.label, 'max_APE', result.max_ape_m, 'm'])
+                writer.writerow([result.label, 'RMSE_X', result.rmse_x_m, 'm'])
+                writer.writerow([result.label, 'RMSE_Y', result.rmse_y_m, 'm'])
+                writer.writerow([result.label, 'RMSE_Z', result.rmse_z_m, 'm'])
+                writer.writerow([result.label, 'mean_abs_X', result.mean_abs_x_m, 'm'])
+                writer.writerow([result.label, 'mean_abs_Y', result.mean_abs_y_m, 'm'])
+                writer.writerow([result.label, 'mean_abs_Z', result.mean_abs_z_m, 'm'])
+                writer.writerow([result.label, 'max_abs_X', result.max_abs_x_m, 'm'])
+                writer.writerow([result.label, 'max_abs_Y', result.max_abs_y_m, 'm'])
+                writer.writerow([result.label, 'max_abs_Z', result.max_abs_z_m, 'm'])
+                writer.writerow([
+                    result.label,
+                    'gt_trajectory_length',
+                    result.trajectory_length_m,
+                    'm',
+                ])
 
     @staticmethod
     def write_plot(
         output_png: Path,
         timestamps_ns: np.ndarray,
+        raw_odom_points: np.ndarray,
         odom_points: np.ndarray,
         gt_points: np.ndarray,
         ape_errors: np.ndarray,
-        result: EvaluationResult,
+        outputs: MetricsOutputs,
+        segment_end_sec: float,
     ) -> None:
         import matplotlib
 
@@ -282,53 +417,122 @@ class Mh01MetricsNode(Node):
         import matplotlib.pyplot as plt
 
         time_sec = (timestamps_ns - timestamps_ns[0]) * 1e-9
-        fig, axes = plt.subplots(1, 2, figsize=(13, 5), constrained_layout=True)
+        fig = plt.figure(figsize=(13, 11), constrained_layout=True)
+        grid = fig.add_gridspec(2, 2)
+        ax_xy = fig.add_subplot(grid[0, 0])
+        ax_xz = fig.add_subplot(grid[0, 1])
+        ax_yz = fig.add_subplot(grid[1, 0])
+        ax_3d = fig.add_subplot(grid[1, 1], projection='3d')
+        full_result = outputs.results[0]
 
-        axes[0].plot(gt_points[:, 0], gt_points[:, 1], label='Ground truth', linewidth=2.0)
-        axes[0].plot(
+        ax_xy.plot(gt_points[:, 0], gt_points[:, 1], label='Ground truth', linewidth=2.0)
+        ax_xy.plot(
             odom_points[:, 0],
             odom_points[:, 1],
             label='Odometry aligned',
             linewidth=1.5,
         )
-        axes[0].set_title('XY trajectory')
-        axes[0].set_xlabel('x [m]')
-        axes[0].set_ylabel('y [m]')
-        axes[0].axis('equal')
-        axes[0].grid(True, alpha=0.3)
-        axes[0].legend()
-
-        axes[1].plot(time_sec, ape_errors, color='tab:red', linewidth=1.4)
-        axes[1].axhline(result.rmse_ape_m, color='black', linestyle='--', linewidth=1.0)
-        axes[1].set_title('APE over time')
-        axes[1].set_xlabel('time [s]')
-        axes[1].set_ylabel('APE [m]')
-        axes[1].grid(True, alpha=0.3)
-        axes[1].text(
+        ax_xy.set_title('XY trajectory')
+        ax_xy.set_xlabel('x [m]')
+        ax_xy.set_ylabel('y [m]')
+        ax_xy.axis('equal')
+        ax_xy.grid(True, alpha=0.3)
+        ax_xy.legend()
+        ax_xy.text(
             0.02,
             0.98,
             (
-                f'avgRTE: {result.avg_rte_percent:.3f}%\n'
-                f'avgRE: {result.avg_re_deg:.3f} deg\n'
-                f'RMSE APE: {result.rmse_ape_m:.3f} m'
+                f'RMSE APE: {full_result.rmse_ape_m:.3f} m\n'
+                f'RMSE XYZ: {full_result.rmse_x_m:.3f}, '
+                f'{full_result.rmse_y_m:.3f}, {full_result.rmse_z_m:.3f} m'
             ),
-            transform=axes[1].transAxes,
+            transform=ax_xy.transAxes,
             va='top',
             bbox={'facecolor': 'white', 'alpha': 0.8, 'edgecolor': 'none'},
         )
 
+        ax_xz.plot(gt_points[:, 0], gt_points[:, 2], label='Ground truth', linewidth=2.0)
+        ax_xz.plot(
+            odom_points[:, 0],
+            odom_points[:, 2],
+            label='Odometry aligned',
+            linewidth=1.5,
+        )
+        ax_xz.set_title('XZ trajectory')
+        ax_xz.set_xlabel('x [m]')
+        ax_xz.set_ylabel('z [m]')
+        ax_xz.axis('equal')
+        ax_xz.grid(True, alpha=0.3)
+        ax_xz.legend()
+
+        ax_yz.plot(gt_points[:, 1], gt_points[:, 2], label='Ground truth', linewidth=2.0)
+        ax_yz.plot(
+            odom_points[:, 1],
+            odom_points[:, 2],
+            label='Odometry aligned',
+            linewidth=1.5,
+        )
+        ax_yz.set_title('YZ trajectory')
+        ax_yz.set_xlabel('y [m]')
+        ax_yz.set_ylabel('z [m]')
+        ax_yz.axis('equal')
+        ax_yz.grid(True, alpha=0.3)
+        ax_yz.legend()
+
+        ax_3d.plot(
+            gt_points[:, 0],
+            gt_points[:, 1],
+            gt_points[:, 2],
+            label='Ground truth',
+            linewidth=2.0,
+        )
+        ax_3d.plot(
+            odom_points[:, 0],
+            odom_points[:, 1],
+            odom_points[:, 2],
+            label='Odometry aligned',
+            linewidth=1.5,
+        )
+        ax_3d.set_title('3D trajectory')
+        ax_3d.set_xlabel('x [m]')
+        ax_3d.set_ylabel('y [m]')
+        ax_3d.set_zlabel('z [m]')
+        ax_3d.legend()
+        Mh01MetricsNode.set_axes_equal_3d(ax_3d, gt_points, odom_points)
+
         fig.savefig(output_png, dpi=160)
         plt.close(fig)
 
-    def log_result(self, result: EvaluationResult) -> None:
-        self.get_logger().info(f'samples: {result.sample_count}')
-        self.get_logger().info(f'relative pairs: {result.relative_pair_count}')
-        self.get_logger().info(f'avgRTE: {result.avg_rte_percent:.6f} %')
-        self.get_logger().info(f'avgRE: {result.avg_re_deg:.6f} deg')
-        self.get_logger().info(f'RMSE APE: {result.rmse_ape_m:.6f} m')
-        self.get_logger().info(f'summary CSV: {result.output_summary_csv}')
-        if result.output_plot_png is not None:
-            self.get_logger().info(f'plot PNG: {result.output_plot_png}')
+    @staticmethod
+    def set_axes_equal_3d(ax, *point_sets: np.ndarray) -> None:
+        points = np.vstack(point_sets)
+        mins = np.min(points, axis=0)
+        maxs = np.max(points, axis=0)
+        centers = (mins + maxs) * 0.5
+        radius = float(np.max(maxs - mins) * 0.5)
+        if radius <= 0.0:
+            radius = 1.0
+        ax.set_xlim(centers[0] - radius, centers[0] + radius)
+        ax.set_ylim(centers[1] - radius, centers[1] + radius)
+        ax.set_zlim(centers[2] - radius, centers[2] + radius)
+
+    def log_result(self, outputs: MetricsOutputs) -> None:
+        for result in outputs.results:
+            self.get_logger().info(f'[{result.label}] samples: {result.sample_count}')
+            self.get_logger().info(f'[{result.label}] relative pairs: {result.relative_pair_count}')
+            self.get_logger().info(f'[{result.label}] avgRTE: {result.avg_rte_percent:.6f} %')
+            self.get_logger().info(f'[{result.label}] avgRE: {result.avg_re_deg:.6f} deg')
+            self.get_logger().info(f'[{result.label}] RMSE APE: {result.rmse_ape_m:.6f} m')
+            self.get_logger().info(
+                f'[{result.label}] RMSE XYZ: '
+                f'{result.rmse_x_m:.6f}, {result.rmse_y_m:.6f}, {result.rmse_z_m:.6f} m'
+            )
+        self.get_logger().info(f'odometry jump count: {outputs.jump_count}')
+        if outputs.first_jump_sec is not None:
+            self.get_logger().info(f'first odometry jump: {outputs.first_jump_sec:.3f} s')
+        self.get_logger().info(f'summary CSV: {outputs.output_summary_csv}')
+        if outputs.output_plot_png is not None:
+            self.get_logger().info(f'plot PNG: {outputs.output_plot_png}')
 
 
 def main(args=None):

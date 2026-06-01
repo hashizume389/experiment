@@ -13,6 +13,7 @@ from typing import Optional
 import rclpy
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
+from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
 
 
 @dataclass(frozen=True)
@@ -129,12 +130,14 @@ class Mh01EvalLogger(Node):
         self.declare_parameter('output_dir', '/home/hashizume/experiment/results')
         self.declare_parameter('output_filename', '')
         self.declare_parameter('max_match_dt_sec', 0.1)
+        self.declare_parameter('qos_reliability', 'reliable')
 
         ground_truth_csv = Path(self.get_parameter('ground_truth_csv').value).expanduser()
         self.odom_topic = str(self.get_parameter('odom_topic').value)
         output_dir = Path(self.get_parameter('output_dir').value).expanduser()
         output_filename = str(self.get_parameter('output_filename').value)
         self.max_match_dt_sec = float(self.get_parameter('max_match_dt_sec').value)
+        qos_reliability = str(self.get_parameter('qos_reliability').value)
 
         self.ground_truth = GroundTruthTrack.from_csv(ground_truth_csv)
         self.csv_file = None
@@ -151,12 +154,14 @@ class Mh01EvalLogger(Node):
         self.output_path = output_dir / output_filename
 
         self.open_output_csv()
+        qos_profile = self.make_qos_profile(qos_reliability)
         self.odom_sub = self.create_subscription(
             Odometry,
             self.odom_topic,
             self.odom_callback,
-            10,
+            qos_profile,
         )
+        self.create_timer(5.0, self.status_timer_callback)
 
         first = self.ground_truth.samples[0].timestamp_ns
         last = self.ground_truth.samples[-1].timestamp_ns
@@ -164,6 +169,7 @@ class Mh01EvalLogger(Node):
         self.get_logger().info(f'ground truth samples: {len(self.ground_truth.samples)}')
         self.get_logger().info(f'ground truth time range [ns]: {first} - {last}')
         self.get_logger().info(f'odometry topic: {self.odom_topic}')
+        self.get_logger().info(f'odometry QoS reliability: {qos_reliability}')
         self.get_logger().info(f'output CSV: {self.output_path}')
 
     def open_output_csv(self) -> None:
@@ -206,6 +212,36 @@ class Mh01EvalLogger(Node):
             'rel_error_2d_m',
             'rel_error_3d_m',
         ])
+
+    def status_timer_callback(self) -> None:
+        publisher_count = self.count_publishers(self.odom_topic)
+        if self.message_count > 0:
+            self.get_logger().info(
+                f'logging {self.message_count} odometry messages from {self.odom_topic}',
+                throttle_duration_sec=30.0,
+            )
+            return
+
+        topics = dict(self.get_topic_names_and_types())
+        if self.odom_topic in topics:
+            self.get_logger().warn(
+                (
+                    f'no odometry received yet from {self.odom_topic}; '
+                    f'publishers={publisher_count}. If publishers > 0, try '
+                    'qos_reliability:=best_effort.'
+                ),
+                throttle_duration_sec=10.0,
+            )
+        else:
+            odom_like_topics = sorted(
+                topic for topic in topics
+                if 'odom' in topic.lower() or 'visual_slam' in topic.lower()
+            )
+            suffix = f' candidates={odom_like_topics}' if odom_like_topics else ''
+            self.get_logger().warn(
+                f'waiting for odometry topic {self.odom_topic}.{suffix}',
+                throttle_duration_sec=10.0,
+            )
 
     def odom_callback(self, msg: Odometry) -> None:
         timestamp_ns = self.stamp_to_ns(msg.header.stamp.sec, msg.header.stamp.nanosec)
@@ -318,6 +354,23 @@ class Mh01EvalLogger(Node):
         siny_cosp = 2.0 * (w * z + x * y)
         cosy_cosp = 1.0 - 2.0 * (y * y + z * z)
         return math.atan2(siny_cosp, cosy_cosp)
+
+    @staticmethod
+    def make_qos_profile(qos_reliability: str) -> QoSProfile:
+        normalized = qos_reliability.strip().lower()
+        if normalized in ('best_effort', 'besteffort', 'best-effort'):
+            reliability = ReliabilityPolicy.BEST_EFFORT
+        elif normalized == 'reliable':
+            reliability = ReliabilityPolicy.RELIABLE
+        else:
+            raise ValueError(
+                "qos_reliability must be 'reliable' or 'best_effort'"
+            )
+        return QoSProfile(
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10,
+            reliability=reliability,
+        )
 
 
 def main(args=None):

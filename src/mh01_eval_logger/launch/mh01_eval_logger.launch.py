@@ -27,6 +27,11 @@ def generate_launch_description():
             default_value='0.1',
             description='Warn when the nearest/interpolated ground truth is farther than this value.',
         ),
+        DeclareLaunchArgument(
+            'qos_reliability',
+            default_value='reliable',
+            description='Odometry subscription reliability: reliable or best_effort.',
+        ),
         Node(
             package='mh01_eval_logger',
             executable='mh01_eval_logger',
@@ -40,6 +45,7 @@ def generate_launch_description():
                     LaunchConfiguration('max_match_dt_sec'),
                     value_type=float,
                 ),
+                'qos_reliability': LaunchConfiguration('qos_reliability'),
             }],
         ),
     ])

@@ -6,10 +6,12 @@ MH_01_easy_ros2/
 MH_01_easy_ros2_with_camera_info/
 /config/
 # ROS 2
+MH_01_easy_ros2_rectified/
+MH_01_easy_ros2_rectified_restamped/
 build/
 install/
 log/
-/config/
+config/
 
 # Python
 __pycache__/

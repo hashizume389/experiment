@@ -108,6 +108,29 @@ git pull origin main
 cd ~/experiment && source install/setup.bash
 ```
 
+## EuRoC MH_01をIsaac ROS Visual SLAM向けに整える
+
+cuVSLAMへEuRoC raw画像を直接入れると、rectification、CameraInfoのbaseline、bag時刻とheader時刻のズレで精度が大きく崩れる可能性があります。以下でrectified + restamped bagを作成します。
+
+```bash
+cd ~/experiment
+python3 scripts/rectify_euroc_stereo_bag.py MH_01_easy_ros2 MH_01_easy_ros2_rectified --overwrite
+python3 scripts/restamp_ros2_bag_by_header.py MH_01_easy_ros2_rectified MH_01_easy_ros2_rectified_restamped --overwrite
+python3 scripts/diagnose_euroc_bag.py MH_01_easy_ros2_rectified_restamped
+```
+
+Isaac ROS Visual SLAM側では、入力を以下へremapしてください。
+
+```text
+visual_slam/image_0        -> /cam0/image_rect
+visual_slam/camera_info_0  -> /cam0/camera_info
+visual_slam/image_1        -> /cam1/image_rect
+visual_slam/camera_info_1  -> /cam1/camera_info
+visual_slam/imu            -> /imu0
+```
+
+詳細は`docs/euroc_cuvslam_preparation.md`を参照してください。
+
 ### ノードの起動
 ```bash
 ros2 run square_vs square_vs
