@@ -69,3 +69,29 @@ ros2 bag play ~/experiment/MH_01_easy_ros2_rectified_restamped --clock
 ```
 
 Then record/evaluate `/visual_slam/tracking/odometry` with `mh01_eval_logger` and `mh01_metrics`.
+
+## Optional LDFE Image Preprocessing
+
+To evaluate MH_01 with the LDFE image preprocessing nodes in this repository:
+
+```bash
+cd ~/experiment
+source install/setup.bash
+ros2 launch infra_enhancer mh01_ldfe_pipeline_launch.py
+```
+
+Use the LDFE output image topics as Visual SLAM inputs while keeping the original rectified CameraInfo topics:
+
+```text
+visual_slam/image_0        -> /mh01/cam0/image_ldfe
+visual_slam/camera_info_0  -> /cam0/camera_info
+visual_slam/image_1        -> /mh01/cam1/image_ldfe
+visual_slam/camera_info_1  -> /cam1/camera_info
+visual_slam/imu            -> /imu0
+```
+
+Playback remains:
+
+```bash
+ros2 bag play ~/experiment/MH_01_easy_ros2_rectified_restamped --clock
+```

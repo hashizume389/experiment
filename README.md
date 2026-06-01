@@ -131,6 +131,14 @@ visual_slam/imu            -> /imu0
 
 詳細は`docs/euroc_cuvslam_preparation.md`を参照してください。
 
+LDFE前処理ありで評価する場合は、別ターミナルで以下も起動します。
+
+```bash
+ros2 launch infra_enhancer mh01_ldfe_pipeline_launch.py
+```
+
+この場合、Isaac ROS Visual SLAM側の画像入力は`/mh01/cam0/image_ldfe`と`/mh01/cam1/image_ldfe`へremapし、CameraInfoは`/cam0/camera_info`と`/cam1/camera_info`をそのまま使ってください。
+
 ### ノードの起動
 ```bash
 ros2 run square_vs square_vs
