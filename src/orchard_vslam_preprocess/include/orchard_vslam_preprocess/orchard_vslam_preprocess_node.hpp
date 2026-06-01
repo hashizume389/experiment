@@ -63,6 +63,7 @@ private:
   void rightImageCallback(const ImageMsg::ConstSharedPtr & msg);
   void leftCameraInfoCallback(const CameraInfoMsg::SharedPtr msg) const;
   void rightCameraInfoCallback(const CameraInfoMsg::SharedPtr msg) const;
+  bool shouldProcessFrame(uint64_t & frame_count) const;
 
   ProcessResult processImage(const ImageMsg::ConstSharedPtr & msg, const cv::Mat & previous_frame);
   void processAndPublishImage(
@@ -120,8 +121,10 @@ private:
   double keypoint_boost_strength_;
   double min_modulation_weight_;
   double max_modulation_weight_;
+  bool publish_reliability_;
   bool publish_debug_;
   bool use_stereo_sync_;
+  int publish_every_n_frames_;
   int log_interval_;
 
   std::string left_image_topic_;
@@ -161,6 +164,9 @@ private:
   cv::Mat previous_left_;
   cv::Mat previous_right_;
   uint64_t processed_frames_;
+  uint64_t left_input_frames_;
+  uint64_t right_input_frames_;
+  uint64_t stereo_input_frames_;
 };
 
 }  // namespace orchard_vslam_preprocess

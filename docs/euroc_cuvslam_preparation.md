@@ -95,3 +95,41 @@ Playback remains:
 ```bash
 ros2 bag play ~/experiment/MH_01_easy_ros2_rectified_restamped --clock
 ```
+
+## Optional Orchard VSLAM Image Preprocessing
+
+To evaluate MH_01 with `orchard_vslam_preprocess_node` while omitting debug
+visualization topics and reliability-map outputs:
+
+```bash
+cd ~/experiment
+source install/setup.bash
+ros2 launch orchard_vslam_preprocess mh01_orchard_vslam_preprocess.launch.py
+```
+
+The MH_01 launch uses a lightweight preset: debug outputs are disabled, FAST is
+used instead of ORB, the keypoint grid is smaller, and `publish_every_n_frames`
+defaults to `2` so the 20 Hz EuRoC stereo stream is published at about 10 Hz.
+For a stricter GPU-memory budget, increase it to `3`:
+
+```bash
+ros2 launch orchard_vslam_preprocess mh01_orchard_vslam_preprocess.launch.py \
+  publish_every_n_frames:=3
+```
+
+Use the preprocessed image topics as Visual SLAM inputs while keeping CameraInfo
+from either the copied output topics or the original rectified bag topics:
+
+```text
+visual_slam/image_0        -> /mh01/cam0/image_orchard_preprocessed
+visual_slam/camera_info_0  -> /mh01/cam0/camera_info
+visual_slam/image_1        -> /mh01/cam1/image_orchard_preprocessed
+visual_slam/camera_info_1  -> /mh01/cam1/camera_info
+visual_slam/imu            -> /imu0
+```
+
+Playback remains:
+
+```bash
+ros2 bag play ~/experiment/MH_01_easy_ros2_rectified_restamped --clock
+```

@@ -87,8 +87,10 @@ ros2 run rqt_image_view rqt_image_view /orchard/left/reliability_map
 - `keypoint_boost_strength`: 採用特徴点周辺の強調量です。
 - `min_modulation_weight`: 最低輝度保持率です。低信頼領域も完全な黒にはしません。
 - `max_modulation_weight`: 最大強調率です。
+- `publish_reliability`: `reliability_map` の publish を有効化します。
 - `publish_debug`: debug_keypoints の publish を有効化します。
 - `use_stereo_sync`: `true` で左右ApproximateTime同期処理、`false` で左右独立処理です。デフォルトは `false` です。
+- `publish_every_n_frames`: 入力画像を何フレームに1回処理・publishするかを指定します。`2` なら約半分の画像レートになります。
 - `log_interval`: 何フレームごとに評価ログを出すかを指定します。
 
 トピック名も YAML から変更できます。
@@ -107,6 +109,14 @@ source install/setup.bash
 ```bash
 ros2 launch orchard_vslam_preprocess orchard_vslam_preprocess.launch.py
 ```
+
+MH_01 評価用に、Visual SLAM 入力に必要な前処理画像と CameraInfo だけを publish する設定も用意しています。
+
+```bash
+ros2 launch orchard_vslam_preprocess mh01_orchard_vslam_preprocess.launch.py
+```
+
+この設定では `/cam0/image_rect` と `/cam1/image_rect` を入力し、`/mh01/cam0/image_orchard_preprocessed` と `/mh01/cam1/image_orchard_preprocessed` を出力します。`debug_keypoints` と `reliability_map` は publish しません。デフォルトでは `publish_every_n_frames:=2` により、MH_01 の 20 Hz 入力を約 10 Hz に間引きます。
 
 別の設定ファイルを使う場合:
 

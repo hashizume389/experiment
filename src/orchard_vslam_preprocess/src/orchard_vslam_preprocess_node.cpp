@@ -33,7 +33,10 @@ cv::Mat makeContinuous(const cv::Mat & image)
 
 OrchardVslamPreprocessNode::OrchardVslamPreprocessNode(const rclcpp::NodeOptions & options)
 : Node("orchard_vslam_preprocess_node", options),
-  processed_frames_(0)
+  processed_frames_(0),
+  left_input_frames_(0),
+  right_input_frames_(0),
+  stereo_input_frames_(0)
 {
   declareParameters();
   updateRuntimeObjects();
@@ -50,10 +53,14 @@ OrchardVslamPreprocessNode::OrchardVslamPreprocessNode(const rclcpp::NodeOptions
   right_image_pub_ = image_transport::create_publisher(this, right_output_image_topic_, output_image_qos);
   left_camera_info_pub_ = create_publisher<CameraInfoMsg>(left_output_camera_info_topic_, output_qos);
   right_camera_info_pub_ = create_publisher<CameraInfoMsg>(right_output_camera_info_topic_, output_qos);
-  left_reliability_pub_ = image_transport::create_publisher(this, left_reliability_topic_, output_image_qos);
-  right_reliability_pub_ = image_transport::create_publisher(this, right_reliability_topic_, output_image_qos);
-  left_debug_pub_ = image_transport::create_publisher(this, left_debug_topic_, output_image_qos);
-  right_debug_pub_ = image_transport::create_publisher(this, right_debug_topic_, output_image_qos);
+  if (publish_reliability_) {
+    left_reliability_pub_ = image_transport::create_publisher(this, left_reliability_topic_, output_image_qos);
+    right_reliability_pub_ = image_transport::create_publisher(this, right_reliability_topic_, output_image_qos);
+  }
+  if (publish_debug_) {
+    left_debug_pub_ = image_transport::create_publisher(this, left_debug_topic_, output_image_qos);
+    right_debug_pub_ = image_transport::create_publisher(this, right_debug_topic_, output_image_qos);
+  }
 
   left_camera_info_sub_ = create_subscription<CameraInfoMsg>(
     left_camera_info_topic_, sensor_qos,
@@ -78,10 +85,10 @@ OrchardVslamPreprocessNode::OrchardVslamPreprocessNode(const rclcpp::NodeOptions
 
   RCLCPP_INFO(
     get_logger(),
-    "orchard_vslam_preprocess_node started: left=%s right=%s out_left=%s out_right=%s mode=%s",
+    "orchard_vslam_preprocess_node started: left=%s right=%s out_left=%s out_right=%s mode=%s publish_every_n_frames=%d",
     left_image_topic_.c_str(), right_image_topic_.c_str(),
     left_output_image_topic_.c_str(), right_output_image_topic_.c_str(),
-    use_stereo_sync_ ? "approximate_time_sync" : "independent");
+    use_stereo_sync_ ? "approximate_time_sync" : "independent", publish_every_n_frames_);
 }
 
 void OrchardVslamPreprocessNode::declareParameters()
@@ -139,8 +146,10 @@ void OrchardVslamPreprocessNode::declareParameters()
   keypoint_boost_strength_ = declare_parameter<double>("keypoint_boost_strength", 0.35);
   min_modulation_weight_ = declare_parameter<double>("min_modulation_weight", 0.60);
   max_modulation_weight_ = declare_parameter<double>("max_modulation_weight", 1.20);
+  publish_reliability_ = declare_parameter<bool>("publish_reliability", true);
   publish_debug_ = declare_parameter<bool>("publish_debug", true);
   use_stereo_sync_ = declare_parameter<bool>("use_stereo_sync", false);
+  publish_every_n_frames_ = declare_parameter<int>("publish_every_n_frames", 1);
   log_interval_ = declare_parameter<int>("log_interval", 30);
 }
 
@@ -160,6 +169,7 @@ void OrchardVslamPreprocessNode::updateRuntimeObjects()
   keypoint_boost_strength_ = std::max(keypoint_boost_strength_, 0.0);
   min_modulation_weight_ = std::clamp(min_modulation_weight_, 0.0, 1.0);
   max_modulation_weight_ = std::max(max_modulation_weight_, min_modulation_weight_);
+  publish_every_n_frames_ = std::max(publish_every_n_frames_, 1);
   log_interval_ = std::max(log_interval_, 1);
   top_penalty_ratio_ = std::clamp(top_penalty_ratio_, 0.0, 1.0);
   std::transform(
@@ -181,6 +191,10 @@ void OrchardVslamPreprocessNode::updateRuntimeObjects()
 void OrchardVslamPreprocessNode::stereoCallback(
   const ImageMsg::ConstSharedPtr & left_msg, const ImageMsg::ConstSharedPtr & right_msg)
 {
+  if (!shouldProcessFrame(stereo_input_frames_)) {
+    return;
+  }
+
   const auto start = std::chrono::steady_clock::now();
 
   try {
@@ -193,14 +207,16 @@ void OrchardVslamPreprocessNode::stereoCallback(
       left_msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(left.output_mono8)).toImageMsg();
     auto right_out_msg = cv_bridge::CvImage(
       right_msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(right.output_mono8)).toImageMsg();
-    auto left_rel_msg = cv_bridge::CvImage(
-      left_msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(left.reliability_mono8)).toImageMsg();
-    auto right_rel_msg = cv_bridge::CvImage(
-      right_msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(right.reliability_mono8)).toImageMsg();
     left_image_pub_.publish(*left_out_msg);
     right_image_pub_.publish(*right_out_msg);
-    left_reliability_pub_.publish(*left_rel_msg);
-    right_reliability_pub_.publish(*right_rel_msg);
+    if (publish_reliability_) {
+      auto left_rel_msg = cv_bridge::CvImage(
+        left_msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(left.reliability_mono8)).toImageMsg();
+      auto right_rel_msg = cv_bridge::CvImage(
+        right_msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(right.reliability_mono8)).toImageMsg();
+      left_reliability_pub_.publish(*left_rel_msg);
+      right_reliability_pub_.publish(*right_rel_msg);
+    }
     if (publish_debug_) {
       auto left_dbg_msg = cv_bridge::CvImage(
         left_msg->header, sensor_msgs::image_encodings::BGR8, makeContinuous(left.debug_bgr8)).toImageMsg();
@@ -224,14 +240,28 @@ void OrchardVslamPreprocessNode::stereoCallback(
 
 void OrchardVslamPreprocessNode::leftImageCallback(const ImageMsg::ConstSharedPtr & msg)
 {
+  if (!shouldProcessFrame(left_input_frames_)) {
+    return;
+  }
+
   processAndPublishImage(
     msg, previous_left_, left_image_pub_, left_reliability_pub_, left_debug_pub_, "L");
 }
 
 void OrchardVslamPreprocessNode::rightImageCallback(const ImageMsg::ConstSharedPtr & msg)
 {
+  if (!shouldProcessFrame(right_input_frames_)) {
+    return;
+  }
+
   processAndPublishImage(
     msg, previous_right_, right_image_pub_, right_reliability_pub_, right_debug_pub_, "R");
+}
+
+bool OrchardVslamPreprocessNode::shouldProcessFrame(uint64_t & frame_count) const
+{
+  const uint64_t current = frame_count++;
+  return current % static_cast<uint64_t>(publish_every_n_frames_) == 0;
 }
 
 void OrchardVslamPreprocessNode::processAndPublishImage(
@@ -249,10 +279,12 @@ void OrchardVslamPreprocessNode::processAndPublishImage(
 
     auto out_msg = cv_bridge::CvImage(
       msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(result.output_mono8)).toImageMsg();
-    auto rel_msg = cv_bridge::CvImage(
-      msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(result.reliability_mono8)).toImageMsg();
     image_pub.publish(*out_msg);
-    reliability_pub.publish(*rel_msg);
+    if (publish_reliability_) {
+      auto rel_msg = cv_bridge::CvImage(
+        msg->header, sensor_msgs::image_encodings::MONO8, makeContinuous(result.reliability_mono8)).toImageMsg();
+      reliability_pub.publish(*rel_msg);
+    }
 
     if (publish_debug_) {
       auto dbg_msg = cv_bridge::CvImage(
@@ -542,7 +574,9 @@ void OrchardVslamPreprocessNode::selectKeypointsAndModulate(
   std::vector<cv::KeyPoint> keypoints = detectKeypoints(mono8);
   result.total_keypoints = static_cast<int>(keypoints.size());
   result.total_grid_cells = grid_rows_ * grid_cols_;
-  cv::cvtColor(mono8, result.debug_bgr8, cv::COLOR_GRAY2BGR);
+  if (publish_debug_) {
+    cv::cvtColor(mono8, result.debug_bgr8, cv::COLOR_GRAY2BGR);
+  }
 
   if (keypoints.empty()) {
     cv::Mat modulation = buildModulationMap(mono8.size(), reliability, {});
@@ -623,12 +657,14 @@ void OrchardVslamPreprocessNode::selectKeypointsAndModulate(
       return keypoint.selected;
     }));
 
-  for (const auto & scored_keypoint : scored) {
-    const auto center = cv::Point(
-      static_cast<int>(std::round(scored_keypoint.keypoint.pt.x)),
-      static_cast<int>(std::round(scored_keypoint.keypoint.pt.y)));
-    const cv::Scalar color = scored_keypoint.selected ? cv::Scalar(0, 220, 0) : cv::Scalar(0, 0, 220);
-    cv::circle(result.debug_bgr8, center, 2, color, -1, cv::LINE_AA);
+  if (publish_debug_) {
+    for (const auto & scored_keypoint : scored) {
+      const auto center = cv::Point(
+        static_cast<int>(std::round(scored_keypoint.keypoint.pt.x)),
+        static_cast<int>(std::round(scored_keypoint.keypoint.pt.y)));
+      const cv::Scalar color = scored_keypoint.selected ? cv::Scalar(0, 220, 0) : cv::Scalar(0, 0, 220);
+      cv::circle(result.debug_bgr8, center, 2, color, -1, cv::LINE_AA);
+    }
   }
 
   result.occupied_grid_cells =
