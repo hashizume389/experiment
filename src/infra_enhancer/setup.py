@@ -37,6 +37,8 @@ setup(
             'edge_node      = infra_enhancer.edge_node:main',
             # Unsharp Mask Node
             'unsharp_node   = infra_enhancer.unsharp_node:main',
+            # Selective lightweight task-aware enhancer
+            'selective_enhancer_node = infra_enhancer.selective_enhancer_node:main',
             # Feature Overlay Node
             'feature_overlay_node = infra_enhancer.feature_overlay_node:main',
         ],

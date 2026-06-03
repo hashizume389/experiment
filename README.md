@@ -172,6 +172,9 @@ ros2 run infra_enhancer normalize_node
 
 # LDFE-SLAMノード
 ros2 run infra_enhancer ldfe_node
+
+# Selective lightweight enhancer (no FAST/CUDA)
+ros2 run infra_enhancer selective_enhancer_node
 ```
 
 ### Launchファイル（パイプライン起動）
@@ -186,6 +189,9 @@ ros2 launch infra_enhancer infra_pipeline_launch.py clahe_clip:=3.0 clahe_tile:=
 
 # LDFE-SLAM 照明適応型前処理パイプライン（左右画像）
 ros2 launch infra_enhancer ldfe_pipeline_launch.py
+
+# EuRoC MH_01 selective lightweight preprocessing
+ros2 launch infra_enhancer mh01_selective_enhancer_launch.py
 ```
 
 ### 柿農園実験用パイプライン
