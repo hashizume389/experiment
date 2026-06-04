@@ -9,8 +9,14 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'ground_truth_csv',
-            default_value='/home/hashizume/experiment/MH_01_easy_leica_position.csv',
-            description='Path to the exported /leica/position ground truth CSV.',
+            default_value=(
+                '/home/hashizume/experiment/MH_01_easy/'
+                'mav0/state_groundtruth_estimate0/data.csv'
+            ),
+            description=(
+                'Path to EuRoC state_groundtruth_estimate0/data.csv or the exported '
+                '/leica/position CSV.'
+            ),
         ),
         DeclareLaunchArgument(
             'odom_topic',

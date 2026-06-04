@@ -9,8 +9,14 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'ground_truth_csv',
-            default_value='/home/hashizume/experiment/MH_01_easy_leica_position.csv',
-            description='Path to the exported /leica/position ground truth CSV.',
+            default_value=(
+                '/home/hashizume/experiment/MH_01_easy/'
+                'mav0/state_groundtruth_estimate0/data.csv'
+            ),
+            description=(
+                'Path to EuRoC state_groundtruth_estimate0/data.csv with position '
+                'and quaternion ground truth.'
+            ),
         ),
         DeclareLaunchArgument(
             'eval_log_csv',
@@ -26,14 +32,34 @@ def generate_launch_description():
             description='Directory for metrics summary and plot outputs.',
         ),
         DeclareLaunchArgument(
+            'relative_delta',
+            default_value='1.0',
+            description='Relative error delta. Interpreted by relative_delta_unit.',
+        ),
+        DeclareLaunchArgument(
+            'relative_delta_unit',
+            default_value='m',
+            description='Relative error delta unit: m, s, or frames.',
+        ),
+        DeclareLaunchArgument(
             'relative_window_sec',
             default_value='1.0',
-            description='Window length used for avgRTE and avgRE relative errors.',
+            description='Fallback window length when relative_delta_unit is s.',
+        ),
+        DeclareLaunchArgument(
+            'alignment',
+            default_value='sim3',
+            description='Trajectory alignment for APE/RPE positions: sim3 or se3.',
         ),
         DeclareLaunchArgument(
             'max_match_dt_sec',
-            default_value='0.5',
+            default_value='0.05',
             description='Skip samples whose ground truth match is farther than this value.',
+        ),
+        DeclareLaunchArgument(
+            'min_relative_distance_m',
+            default_value='0.1',
+            description='Skip RPE pairs with shorter ground truth distance.',
         ),
         DeclareLaunchArgument(
             'segment_end_sec',
@@ -59,8 +85,18 @@ def generate_launch_description():
                 'ground_truth_csv': LaunchConfiguration('ground_truth_csv'),
                 'eval_log_csv': LaunchConfiguration('eval_log_csv'),
                 'output_dir': LaunchConfiguration('output_dir'),
+                'relative_delta': ParameterValue(
+                    LaunchConfiguration('relative_delta'),
+                    value_type=float,
+                ),
+                'relative_delta_unit': LaunchConfiguration('relative_delta_unit'),
                 'relative_window_sec': ParameterValue(
                     LaunchConfiguration('relative_window_sec'),
+                    value_type=float,
+                ),
+                'alignment': LaunchConfiguration('alignment'),
+                'min_relative_distance_m': ParameterValue(
+                    LaunchConfiguration('min_relative_distance_m'),
                     value_type=float,
                 ),
                 'max_match_dt_sec': ParameterValue(

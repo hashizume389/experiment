@@ -22,6 +22,10 @@ class GroundTruthSample:
     x: float
     y: float
     z: float
+    qx: Optional[float] = None
+    qy: Optional[float] = None
+    qz: Optional[float] = None
+    qw: Optional[float] = None
 
 
 @dataclass(frozen=True)
@@ -32,6 +36,14 @@ class GroundTruthMatch:
     z: float
     dt_sec: float
     mode: str
+    qx: Optional[float] = None
+    qy: Optional[float] = None
+    qz: Optional[float] = None
+    qw: Optional[float] = None
+
+    @property
+    def has_orientation(self) -> bool:
+        return None not in (self.qx, self.qy, self.qz, self.qw)
 
 
 class GroundTruthTrack:
@@ -48,19 +60,51 @@ class GroundTruthTrack:
 
         with csv_path.open(newline='', encoding='utf-8') as csv_file:
             reader = csv.DictReader(csv_file)
-            required_columns = {'timestamp_ns', 'x_m', 'y_m', 'z_m'}
-            missing = required_columns - set(reader.fieldnames or [])
-            if missing:
-                missing_text = ', '.join(sorted(missing))
-                raise ValueError(f'ground truth CSV is missing columns: {missing_text}')
+            fieldnames = reader.fieldnames or []
+            columns = {name.strip(): name for name in fieldnames}
+            is_simple_position_csv = {'timestamp_ns', 'x_m', 'y_m', 'z_m'} <= set(columns)
+            euroc_timestamp_column = (
+                columns.get('#timestamp [ns]')
+                or columns.get('#timestamp')
+            )
+            is_euroc_pose_csv = (
+                euroc_timestamp_column is not None
+                and 'p_RS_R_x [m]' in columns
+                and 'p_RS_R_y [m]' in columns
+                and 'p_RS_R_z [m]' in columns
+                and 'q_RS_w []' in columns
+                and 'q_RS_x []' in columns
+                and 'q_RS_y []' in columns
+                and 'q_RS_z []' in columns
+            )
+            if not is_simple_position_csv and not is_euroc_pose_csv:
+                raise ValueError(
+                    'ground truth CSV must be either the exported position format '
+                    '(timestamp_ns,x_m,y_m,z_m) or EuRoC state_groundtruth_estimate0/data.csv'
+                )
 
             for row in reader:
+                if is_euroc_pose_csv:
+                    samples.append(
+                        GroundTruthSample(
+                            timestamp_ns=int(row[euroc_timestamp_column]),
+                            x=float(row[columns['p_RS_R_x [m]']]),
+                            y=float(row[columns['p_RS_R_y [m]']]),
+                            z=float(row[columns['p_RS_R_z [m]']]),
+                            qx=float(row[columns['q_RS_x []']]),
+                            qy=float(row[columns['q_RS_y []']]),
+                            qz=float(row[columns['q_RS_z []']]),
+                            qw=float(row[columns['q_RS_w []']]),
+                        )
+                    )
+                    continue
+
                 samples.append(
                     GroundTruthSample(
-                        timestamp_ns=int(row['timestamp_ns']),
-                        x=float(row['x_m']),
-                        y=float(row['y_m']),
-                        z=float(row['z_m']),
+                        timestamp_ns=int(row[columns['timestamp_ns']]),
+                        x=float(row[columns['x_m']]),
+                        y=float(row[columns['y_m']]),
+                        z=float(row[columns['z_m']]),
                     )
                 )
 
@@ -92,6 +136,13 @@ class GroundTruthTrack:
         x = before.x + (after.x - before.x) * ratio
         y = before.y + (after.y - before.y) * ratio
         z = before.z + (after.z - before.z) * ratio
+        qx = qy = qz = qw = None
+        if self._has_orientation(before) and self._has_orientation(after):
+            qx, qy, qz, qw = self.slerp(
+                (before.qx, before.qy, before.qz, before.qw),
+                (after.qx, after.qy, after.qz, after.qw),
+                ratio,
+            )
         nearest_dt_ns = min(
             abs(timestamp_ns - before.timestamp_ns),
             abs(after.timestamp_ns - timestamp_ns),
@@ -104,6 +155,10 @@ class GroundTruthTrack:
             z=z,
             dt_sec=nearest_dt_ns * 1e-9,
             mode='interpolated',
+            qx=qx,
+            qy=qy,
+            qz=qz,
+            qw=qw,
         )
 
     @staticmethod
@@ -115,6 +170,58 @@ class GroundTruthTrack:
             z=sample.z,
             dt_sec=(timestamp_ns - sample.timestamp_ns) * 1e-9,
             mode='nearest',
+            qx=sample.qx,
+            qy=sample.qy,
+            qz=sample.qz,
+            qw=sample.qw,
+        )
+
+    @staticmethod
+    def _has_orientation(sample: GroundTruthSample) -> bool:
+        return None not in (sample.qx, sample.qy, sample.qz, sample.qw)
+
+    @staticmethod
+    def normalize_quaternion(
+        quat: tuple[float, float, float, float],
+    ) -> tuple[float, float, float, float]:
+        x, y, z, w = quat
+        norm = math.sqrt(x * x + y * y + z * z + w * w)
+        if norm <= 0.0:
+            return 0.0, 0.0, 0.0, 1.0
+        return x / norm, y / norm, z / norm, w / norm
+
+    @classmethod
+    def slerp(
+        cls,
+        q0: tuple[float, float, float, float],
+        q1: tuple[float, float, float, float],
+        ratio: float,
+    ) -> tuple[float, float, float, float]:
+        x0, y0, z0, w0 = cls.normalize_quaternion(q0)
+        x1, y1, z1, w1 = cls.normalize_quaternion(q1)
+        dot = x0 * x1 + y0 * y1 + z0 * z1 + w0 * w1
+        if dot < 0.0:
+            x1, y1, z1, w1 = -x1, -y1, -z1, -w1
+            dot = -dot
+        if dot > 0.9995:
+            return cls.normalize_quaternion((
+                x0 + ratio * (x1 - x0),
+                y0 + ratio * (y1 - y0),
+                z0 + ratio * (z1 - z0),
+                w0 + ratio * (w1 - w0),
+            ))
+
+        theta_0 = math.acos(max(-1.0, min(1.0, dot)))
+        theta = theta_0 * ratio
+        sin_theta = math.sin(theta)
+        sin_theta_0 = math.sin(theta_0)
+        s0 = math.cos(theta) - dot * sin_theta / sin_theta_0
+        s1 = sin_theta / sin_theta_0
+        return (
+            s0 * x0 + s1 * x1,
+            s0 * y0 + s1 * y1,
+            s0 * z0 + s1 * z1,
+            s0 * w0 + s1 * w1,
         )
 
 
@@ -124,7 +231,7 @@ class Mh01EvalLogger(Node):
 
         self.declare_parameter(
             'ground_truth_csv',
-            '/home/hashizume/experiment/MH_01_easy_leica_position.csv',
+            '/home/hashizume/experiment/MH_01_easy/mav0/state_groundtruth_estimate0/data.csv',
         )
         self.declare_parameter('odom_topic', '/visual_slam/tracking/odometry')
         self.declare_parameter('output_dir', '/home/hashizume/experiment/results')
@@ -195,6 +302,11 @@ class Mh01EvalLogger(Node):
             'gt_x_m',
             'gt_y_m',
             'gt_z_m',
+            'gt_qx',
+            'gt_qy',
+            'gt_qz',
+            'gt_qw',
+            'orientation_error_deg',
             'error_x_m',
             'error_y_m',
             'error_z_m',
@@ -262,6 +374,19 @@ class Mh01EvalLogger(Node):
         error_z = position.z - gt.z
         error_2d = math.hypot(error_x, error_y)
         error_3d = math.sqrt(error_x * error_x + error_y * error_y + error_z * error_z)
+        orientation_error_deg = ''
+        if gt.has_orientation:
+            orientation_error_deg = self.quaternion_angle_deg((
+                orientation.x,
+                orientation.y,
+                orientation.z,
+                orientation.w,
+            ), (
+                gt.qx,
+                gt.qy,
+                gt.qz,
+                gt.qw,
+            ))
 
         if self.first_odom_position is None:
             self.first_odom_position = (position.x, position.y, position.z)
@@ -306,6 +431,11 @@ class Mh01EvalLogger(Node):
             gt.x,
             gt.y,
             gt.z,
+            gt.qx if gt.qx is not None else '',
+            gt.qy if gt.qy is not None else '',
+            gt.qz if gt.qz is not None else '',
+            gt.qw if gt.qw is not None else '',
+            orientation_error_deg,
             error_x,
             error_y,
             error_z,
@@ -354,6 +484,17 @@ class Mh01EvalLogger(Node):
         siny_cosp = 2.0 * (w * z + x * y)
         cosy_cosp = 1.0 - 2.0 * (y * y + z * z)
         return math.atan2(siny_cosp, cosy_cosp)
+
+    @staticmethod
+    def quaternion_angle_deg(
+        q0: tuple[float, float, float, float],
+        q1: tuple[float, float, float, float],
+    ) -> float:
+        x0, y0, z0, w0 = GroundTruthTrack.normalize_quaternion(q0)
+        x1, y1, z1, w1 = GroundTruthTrack.normalize_quaternion(q1)
+        dot = abs(x0 * x1 + y0 * y1 + z0 * z1 + w0 * w1)
+        dot = max(-1.0, min(1.0, dot))
+        return math.degrees(2.0 * math.acos(dot))
 
     @staticmethod
     def make_qos_profile(qos_reliability: str) -> QoSProfile:

@@ -41,6 +41,8 @@ class EvaluationResult:
     max_abs_y_m: float
     max_abs_z_m: float
     trajectory_length_m: float
+    alignment_scale: float
+    uses_orientation: bool
 
 
 @dataclass(frozen=True)
@@ -58,15 +60,19 @@ class Mh01MetricsNode(Node):
 
         self.declare_parameter(
             'ground_truth_csv',
-            '/home/hashizume/experiment/MH_01_easy_leica_position.csv',
+            '/home/hashizume/experiment/MH_01_easy/mav0/state_groundtruth_estimate0/data.csv',
         )
         self.declare_parameter(
             'eval_log_csv',
             '/home/hashizume/experiment/results/mh01_eval_log_20260528_150755.csv',
         )
         self.declare_parameter('output_dir', '/home/hashizume/experiment/results')
+        self.declare_parameter('relative_delta', 1.0)
+        self.declare_parameter('relative_delta_unit', 'm')
         self.declare_parameter('relative_window_sec', 1.0)
-        self.declare_parameter('max_match_dt_sec', 0.5)
+        self.declare_parameter('alignment', 'sim3')
+        self.declare_parameter('min_relative_distance_m', 0.1)
+        self.declare_parameter('max_match_dt_sec', 0.05)
         self.declare_parameter('segment_end_sec', 50.0)
         self.declare_parameter('jump_threshold_m', 0.5)
         self.declare_parameter('plot', True)
@@ -76,7 +82,11 @@ class Mh01MetricsNode(Node):
         ).expanduser()
         eval_log_csv = Path(str(self.get_parameter('eval_log_csv').value)).expanduser()
         output_dir = Path(str(self.get_parameter('output_dir').value)).expanduser()
+        relative_delta = float(self.get_parameter('relative_delta').value)
+        relative_delta_unit = str(self.get_parameter('relative_delta_unit').value).strip().lower()
         relative_window_sec = float(self.get_parameter('relative_window_sec').value)
+        alignment = str(self.get_parameter('alignment').value).strip().lower()
+        min_relative_distance_m = float(self.get_parameter('min_relative_distance_m').value)
         max_match_dt_sec = float(self.get_parameter('max_match_dt_sec').value)
         segment_end_sec = float(self.get_parameter('segment_end_sec').value)
         jump_threshold_m = float(self.get_parameter('jump_threshold_m').value)
@@ -86,7 +96,11 @@ class Mh01MetricsNode(Node):
             ground_truth_csv=ground_truth_csv,
             eval_log_csv=eval_log_csv,
             output_dir=output_dir,
+            relative_delta=relative_delta,
+            relative_delta_unit=relative_delta_unit,
             relative_window_sec=relative_window_sec,
+            alignment=alignment,
+            min_relative_distance_m=min_relative_distance_m,
             max_match_dt_sec=max_match_dt_sec,
             segment_end_sec=segment_end_sec,
             jump_threshold_m=jump_threshold_m,
@@ -99,14 +113,18 @@ class Mh01MetricsNode(Node):
         ground_truth_csv: Path,
         eval_log_csv: Path,
         output_dir: Path,
+        relative_delta: float,
+        relative_delta_unit: str,
         relative_window_sec: float,
+        alignment: str,
+        min_relative_distance_m: float,
         max_match_dt_sec: float,
         segment_end_sec: float,
         jump_threshold_m: float,
         plot: bool,
     ) -> MetricsOutputs:
         ground_truth = GroundTruthTrack.from_csv(ground_truth_csv)
-        timestamps_ns, odom_points, gt_points = self.load_trajectories(
+        timestamps_ns, odom_points, odom_quats, gt_points, gt_quats = self.load_trajectories(
             eval_log_csv,
             ground_truth,
             max_match_dt_sec,
@@ -116,8 +134,14 @@ class Mh01MetricsNode(Node):
             'full',
             timestamps_ns,
             odom_points,
+            odom_quats,
             gt_points,
+            gt_quats,
+            relative_delta,
+            relative_delta_unit,
             relative_window_sec,
+            min_relative_distance_m,
+            alignment,
         )
         results = [full_result]
 
@@ -127,8 +151,14 @@ class Mh01MetricsNode(Node):
                 f'first_{segment_end_sec:g}s',
                 timestamps_ns[segment_mask],
                 odom_points[segment_mask],
+                odom_quats[segment_mask] if odom_quats is not None else None,
                 gt_points[segment_mask],
+                gt_quats[segment_mask] if gt_quats is not None else None,
+                relative_delta,
+                relative_delta_unit,
                 relative_window_sec,
+                min_relative_distance_m,
+                alignment,
             )
             results.append(segment_result)
         else:
@@ -154,7 +184,11 @@ class Mh01MetricsNode(Node):
             outputs,
             eval_log_csv,
             ground_truth_csv,
+            relative_delta,
+            relative_delta_unit,
             relative_window_sec,
+            alignment,
+            min_relative_distance_m,
             segment_end_sec,
             jump_threshold_m,
         )
@@ -178,10 +212,21 @@ class Mh01MetricsNode(Node):
         label: str,
         timestamps_ns: np.ndarray,
         odom_points: np.ndarray,
+        odom_quats: Optional[np.ndarray],
         gt_points: np.ndarray,
+        gt_quats: Optional[np.ndarray],
+        relative_delta: float,
+        relative_delta_unit: str,
         relative_window_sec: float,
+        min_relative_distance_m: float,
+        alignment: str,
     ) -> tuple[EvaluationResult, np.ndarray, np.ndarray]:
-        aligned_odom_points, _, _ = self.align_rigid(odom_points, gt_points)
+        aligned_odom_points, rotation, _, scale = self.align_points(
+            odom_points,
+            gt_points,
+            alignment,
+        )
+        aligned_odom_quats = self.rotate_quaternions(odom_quats, rotation)
         component_errors = aligned_odom_points - gt_points
         ape_errors = np.linalg.norm(component_errors, axis=1)
         squared_component_errors = component_errors * component_errors
@@ -189,9 +234,15 @@ class Mh01MetricsNode(Node):
         relative_errors = self.compute_relative_errors(
             timestamps_ns,
             aligned_odom_points,
+            aligned_odom_quats,
             gt_points,
+            gt_quats,
+            relative_delta,
+            relative_delta_unit,
             relative_window_sec,
+            min_relative_distance_m,
         )
+        uses_orientation = aligned_odom_quats is not None and gt_quats is not None
 
         result = EvaluationResult(
             label=label,
@@ -213,6 +264,8 @@ class Mh01MetricsNode(Node):
             max_abs_y_m=float(np.max(abs_component_errors[:, 1])),
             max_abs_z_m=float(np.max(abs_component_errors[:, 2])),
             trajectory_length_m=self.path_length(gt_points),
+            alignment_scale=scale,
+            uses_orientation=uses_orientation,
         )
         return result, aligned_odom_points, ape_errors
 
@@ -221,10 +274,18 @@ class Mh01MetricsNode(Node):
         eval_log_csv: Path,
         ground_truth: GroundTruthTrack,
         max_match_dt_sec: float,
-    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ) -> tuple[
+        np.ndarray,
+        np.ndarray,
+        Optional[np.ndarray],
+        np.ndarray,
+        Optional[np.ndarray],
+    ]:
         timestamps_ns: list[int] = []
         odom_points: list[list[float]] = []
+        odom_quats: list[list[float]] = []
         gt_points: list[list[float]] = []
+        gt_quats: list[list[float]] = []
         skipped = 0
 
         with eval_log_csv.open(newline='', encoding='utf-8') as csv_file:
@@ -234,6 +295,10 @@ class Mh01MetricsNode(Node):
                 'odom_x_m',
                 'odom_y_m',
                 'odom_z_m',
+                'odom_qx',
+                'odom_qy',
+                'odom_qz',
+                'odom_qw',
             }
             missing = required_columns - set(reader.fieldnames or [])
             if missing:
@@ -246,6 +311,11 @@ class Mh01MetricsNode(Node):
                 if abs(gt.dt_sec) > max_match_dt_sec:
                     skipped += 1
                     continue
+                if not gt.has_orientation:
+                    raise ValueError(
+                        'ground truth match has no orientation; use EuRoC '
+                        'state_groundtruth_estimate0/data.csv for avgRE'
+                    )
 
                 timestamps_ns.append(timestamp_ns)
                 odom_points.append([
@@ -253,7 +323,15 @@ class Mh01MetricsNode(Node):
                     float(row['odom_y_m']),
                     float(row['odom_z_m']),
                 ])
+                odom_quats.append([
+                    float(row['odom_qx']),
+                    float(row['odom_qy']),
+                    float(row['odom_qz']),
+                    float(row['odom_qw']),
+                ])
                 gt_points.append([gt.x, gt.y, gt.z])
+                if gt.has_orientation:
+                    gt_quats.append([gt.qx, gt.qy, gt.qz, gt.qw])
 
         if skipped:
             self.get_logger().warn(
@@ -265,14 +343,26 @@ class Mh01MetricsNode(Node):
         return (
             np.asarray(timestamps_ns, dtype=np.int64),
             np.asarray(odom_points, dtype=np.float64),
+            np.asarray(
+                [self.normalize_quat(quat) for quat in odom_quats],
+                dtype=np.float64,
+            ) if len(odom_quats) == len(odom_points) else None,
             np.asarray(gt_points, dtype=np.float64),
+            np.asarray(
+                [self.normalize_quat(quat) for quat in gt_quats],
+                dtype=np.float64,
+            ) if len(gt_quats) == len(gt_points) else None,
         )
 
     @staticmethod
-    def align_rigid(
+    def align_points(
         source_points: np.ndarray,
         target_points: np.ndarray,
-    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        alignment: str,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
+        if alignment not in ('se3', 'sim3'):
+            raise ValueError("alignment must be 'se3' or 'sim3'")
+
         source_center = np.mean(source_points, axis=0)
         target_center = np.mean(target_points, axis=0)
         source_zero = source_points - source_center
@@ -285,43 +375,113 @@ class Mh01MetricsNode(Node):
             vt[-1, :] *= -1.0
             rotation = vt.T @ u.T
 
-        translation = target_center - rotation @ source_center
-        aligned = (rotation @ source_points.T).T + translation
-        return aligned, rotation, translation
+        scale = 1.0
+        if alignment == 'sim3':
+            denominator = float(np.sum(source_zero * source_zero))
+            if denominator > 0.0:
+                scale = float(np.sum((rotation @ source_zero.T).T * target_zero) / denominator)
+
+        translation = target_center - scale * rotation @ source_center
+        aligned = scale * (rotation @ source_points.T).T + translation
+        return aligned, rotation, translation, scale
 
     @staticmethod
     def compute_relative_errors(
         timestamps_ns: np.ndarray,
         odom_points: np.ndarray,
+        odom_quats: Optional[np.ndarray],
         gt_points: np.ndarray,
+        gt_quats: Optional[np.ndarray],
+        relative_delta: float,
+        relative_delta_unit: str,
         relative_window_sec: float,
+        min_relative_distance_m: float,
     ) -> list[RelativeError]:
-        window_ns = int(relative_window_sec * 1_000_000_000)
+        if odom_quats is None or gt_quats is None:
+            raise ValueError(
+                'avgRE requires odometry and ground truth quaternions; use EuRoC '
+                'state_groundtruth_estimate0/data.csv and an eval log with odom_qx/qy/qz/qw'
+            )
+        pairs = Mh01MetricsNode.relative_pair_indices(
+            timestamps_ns,
+            gt_points,
+            relative_delta,
+            relative_delta_unit,
+            relative_window_sec,
+        )
         errors: list[RelativeError] = []
 
-        for index, timestamp_ns in enumerate(timestamps_ns):
-            target_timestamp_ns = timestamp_ns + window_ns
-            pair_index = int(np.searchsorted(timestamps_ns, target_timestamp_ns))
-            if pair_index >= len(timestamps_ns):
-                break
-
+        for index, pair_index in pairs:
             odom_delta = odom_points[pair_index] - odom_points[index]
             gt_delta = gt_points[pair_index] - gt_points[index]
             gt_distance = float(np.linalg.norm(gt_delta))
-            odom_distance = float(np.linalg.norm(odom_delta))
-            if gt_distance <= 1e-9 or odom_distance <= 1e-9:
+            if gt_distance < min_relative_distance_m:
                 continue
 
             translation_error = float(np.linalg.norm(odom_delta - gt_delta))
             rte_percent = translation_error / gt_distance * 100.0
-            cosine = float(np.dot(odom_delta, gt_delta) / (odom_distance * gt_distance))
-            cosine = max(-1.0, min(1.0, cosine))
-            re_deg = math.degrees(math.acos(cosine))
+            odom_delta_rot = Mh01MetricsNode.relative_rotation(
+                odom_quats[index],
+                odom_quats[pair_index],
+            )
+            gt_delta_rot = Mh01MetricsNode.relative_rotation(
+                gt_quats[index],
+                gt_quats[pair_index],
+            )
+            rot_error = Mh01MetricsNode.quat_multiply(
+                Mh01MetricsNode.quat_inverse(gt_delta_rot),
+                odom_delta_rot,
+            )
+            re_deg = Mh01MetricsNode.quaternion_angle_deg(rot_error)
             errors.append(RelativeError(rte_percent=rte_percent, re_deg=re_deg))
 
         if not errors:
-            raise ValueError('no valid relative error pairs; lower relative_window_sec')
+            raise ValueError(
+                'no valid relative error pairs; adjust relative_delta, '
+                'relative_delta_unit, or min_relative_distance_m'
+            )
         return errors
+
+    @staticmethod
+    def relative_pair_indices(
+        timestamps_ns: np.ndarray,
+        gt_points: np.ndarray,
+        relative_delta: float,
+        relative_delta_unit: str,
+        relative_window_sec: float,
+    ) -> list[tuple[int, int]]:
+        unit = relative_delta_unit.strip().lower()
+        pairs: list[tuple[int, int]] = []
+
+        if unit in ('m', 'meter', 'meters', 'distance'):
+            path = np.concatenate(
+                ([0.0], np.cumsum(np.linalg.norm(np.diff(gt_points, axis=0), axis=1)))
+            )
+            for index, distance in enumerate(path):
+                pair_index = int(np.searchsorted(path, distance + relative_delta))
+                if pair_index >= len(path):
+                    break
+                pairs.append((index, pair_index))
+            return pairs
+
+        if unit in ('s', 'sec', 'second', 'seconds', 'time'):
+            window_ns = int(relative_window_sec * 1_000_000_000)
+            for index, timestamp_ns in enumerate(timestamps_ns):
+                pair_index = int(np.searchsorted(timestamps_ns, timestamp_ns + window_ns))
+                if pair_index >= len(timestamps_ns):
+                    break
+                pairs.append((index, pair_index))
+            return pairs
+
+        if unit in ('frame', 'frames'):
+            frame_delta = int(round(relative_delta))
+            if frame_delta <= 0:
+                raise ValueError('relative_delta must be positive when relative_delta_unit=frames')
+            for index in range(0, len(timestamps_ns) - frame_delta):
+                pairs.append((index, index + frame_delta))
+            return pairs
+
+        raise ValueError("relative_delta_unit must be 'm', 's', or 'frames'")
 
     @staticmethod
     def segment_mask(timestamps_ns: np.ndarray, segment_end_sec: float) -> np.ndarray:
@@ -350,11 +510,94 @@ class Mh01MetricsNode(Node):
         return float(np.sum(np.linalg.norm(deltas, axis=1)))
 
     @staticmethod
+    def rotate_quaternions(
+        quats: Optional[np.ndarray],
+        rotation: np.ndarray,
+    ) -> Optional[np.ndarray]:
+        if quats is None:
+            return None
+        rotation_quat = Mh01MetricsNode.rotation_matrix_to_quat(rotation)
+        return np.asarray([
+            Mh01MetricsNode.quat_multiply(rotation_quat, quat)
+            for quat in quats
+        ], dtype=np.float64)
+
+    @staticmethod
+    def normalize_quat(quat: np.ndarray | list[float] | tuple[float, float, float, float]) -> np.ndarray:
+        q = np.asarray(quat, dtype=np.float64)
+        norm = float(np.linalg.norm(q))
+        if norm <= 0.0:
+            return np.asarray([0.0, 0.0, 0.0, 1.0], dtype=np.float64)
+        return q / norm
+
+    @staticmethod
+    def quat_inverse(quat: np.ndarray) -> np.ndarray:
+        q = Mh01MetricsNode.normalize_quat(quat)
+        return np.asarray([-q[0], -q[1], -q[2], q[3]], dtype=np.float64)
+
+    @staticmethod
+    def quat_multiply(q0: np.ndarray, q1: np.ndarray) -> np.ndarray:
+        x0, y0, z0, w0 = Mh01MetricsNode.normalize_quat(q0)
+        x1, y1, z1, w1 = Mh01MetricsNode.normalize_quat(q1)
+        return Mh01MetricsNode.normalize_quat(np.asarray([
+            w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
+            w0 * y1 - x0 * z1 + y0 * w1 + z0 * x1,
+            w0 * z1 + x0 * y1 - y0 * x1 + z0 * w1,
+            w0 * w1 - x0 * x1 - y0 * y1 - z0 * z1,
+        ], dtype=np.float64))
+
+    @staticmethod
+    def relative_rotation(q_from: np.ndarray, q_to: np.ndarray) -> np.ndarray:
+        return Mh01MetricsNode.quat_multiply(
+            Mh01MetricsNode.quat_inverse(q_from),
+            q_to,
+        )
+
+    @staticmethod
+    def quaternion_angle_deg(quat: np.ndarray) -> float:
+        q = Mh01MetricsNode.normalize_quat(quat)
+        w = max(-1.0, min(1.0, abs(float(q[3]))))
+        return math.degrees(2.0 * math.acos(w))
+
+    @staticmethod
+    def rotation_matrix_to_quat(rotation: np.ndarray) -> np.ndarray:
+        trace = float(np.trace(rotation))
+        if trace > 0.0:
+            s = math.sqrt(trace + 1.0) * 2.0
+            qw = 0.25 * s
+            qx = (rotation[2, 1] - rotation[1, 2]) / s
+            qy = (rotation[0, 2] - rotation[2, 0]) / s
+            qz = (rotation[1, 0] - rotation[0, 1]) / s
+        elif rotation[0, 0] > rotation[1, 1] and rotation[0, 0] > rotation[2, 2]:
+            s = math.sqrt(1.0 + rotation[0, 0] - rotation[1, 1] - rotation[2, 2]) * 2.0
+            qw = (rotation[2, 1] - rotation[1, 2]) / s
+            qx = 0.25 * s
+            qy = (rotation[0, 1] + rotation[1, 0]) / s
+            qz = (rotation[0, 2] + rotation[2, 0]) / s
+        elif rotation[1, 1] > rotation[2, 2]:
+            s = math.sqrt(1.0 + rotation[1, 1] - rotation[0, 0] - rotation[2, 2]) * 2.0
+            qw = (rotation[0, 2] - rotation[2, 0]) / s
+            qx = (rotation[0, 1] + rotation[1, 0]) / s
+            qy = 0.25 * s
+            qz = (rotation[1, 2] + rotation[2, 1]) / s
+        else:
+            s = math.sqrt(1.0 + rotation[2, 2] - rotation[0, 0] - rotation[1, 1]) * 2.0
+            qw = (rotation[1, 0] - rotation[0, 1]) / s
+            qx = (rotation[0, 2] + rotation[2, 0]) / s
+            qy = (rotation[1, 2] + rotation[2, 1]) / s
+            qz = 0.25 * s
+        return Mh01MetricsNode.normalize_quat(np.asarray([qx, qy, qz, qw], dtype=np.float64))
+
+    @staticmethod
     def write_summary(
         outputs: MetricsOutputs,
         eval_log_csv: Path,
         ground_truth_csv: Path,
+        relative_delta: float,
+        relative_delta_unit: str,
         relative_window_sec: float,
+        alignment: str,
+        min_relative_distance_m: float,
         segment_end_sec: float,
         jump_threshold_m: float,
     ) -> None:
@@ -363,7 +606,12 @@ class Mh01MetricsNode(Node):
             writer.writerow(['label', 'metric', 'value', 'unit'])
             writer.writerow(['input', 'ground_truth_csv', str(ground_truth_csv), 'path'])
             writer.writerow(['input', 'eval_log_csv', str(eval_log_csv), 'path'])
+            writer.writerow(['config', 'pose_direction', 'T_odom_imu0 / T_world_body; no inverse', 'text'])
+            writer.writerow(['config', 'alignment', alignment, 'se3_or_sim3'])
+            writer.writerow(['config', 'relative_delta', relative_delta, relative_delta_unit])
+            writer.writerow(['config', 'relative_delta_unit', relative_delta_unit, 'unit'])
             writer.writerow(['config', 'relative_window_sec', relative_window_sec, 's'])
+            writer.writerow(['config', 'min_relative_distance_m', min_relative_distance_m, 'm'])
             writer.writerow(['config', 'segment_end_sec', segment_end_sec, 's'])
             writer.writerow(['config', 'jump_threshold_m', jump_threshold_m, 'm'])
             writer.writerow(['diagnostic', 'odometry_jump_count', outputs.jump_count, 'count'])
@@ -380,7 +628,14 @@ class Mh01MetricsNode(Node):
                 ])
                 writer.writerow([result.label, 'avgRTE', result.avg_rte_percent, '%'])
                 writer.writerow([result.label, 'avgRE', result.avg_re_deg, 'deg'])
+                writer.writerow([
+                    result.label,
+                    'avgRE_definition',
+                    'relative rotation from odom and ground truth quaternions',
+                    'text',
+                ])
                 writer.writerow([result.label, 'RMSE_APE', result.rmse_ape_m, 'm'])
+                writer.writerow([result.label, 'alignment_scale', result.alignment_scale, 'ratio'])
                 writer.writerow([result.label, 'mean_APE', result.mean_ape_m, 'm'])
                 writer.writerow([result.label, 'median_APE', result.median_ape_m, 'm'])
                 writer.writerow([result.label, 'max_APE', result.max_ape_m, 'm'])
@@ -523,6 +778,11 @@ class Mh01MetricsNode(Node):
             self.get_logger().info(f'[{result.label}] avgRTE: {result.avg_rte_percent:.6f} %')
             self.get_logger().info(f'[{result.label}] avgRE: {result.avg_re_deg:.6f} deg')
             self.get_logger().info(f'[{result.label}] RMSE APE: {result.rmse_ape_m:.6f} m')
+            self.get_logger().info(f'[{result.label}] alignment scale: {result.alignment_scale:.9f}')
+            self.get_logger().info(
+                f'[{result.label}] avgRE source: '
+                f'{"quaternion RPE" if result.uses_orientation else "translation-vector fallback"}'
+            )
             self.get_logger().info(
                 f'[{result.label}] RMSE XYZ: '
                 f'{result.rmse_x_m:.6f}, {result.rmse_y_m:.6f}, {result.rmse_z_m:.6f} m'

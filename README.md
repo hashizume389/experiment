@@ -129,6 +129,8 @@ visual_slam/camera_info_1  -> /cam1/camera_info
 visual_slam/imu            -> /imu0
 ```
 
+原著cuVSLAM Table 2のStereo EuRoC Odom行を比較する場合は、Visual SLAMを`base_frame:=imu0`、`rectified_images:=True`、`enable_imu_fusion:=False`で起動し、`/visual_slam/tracking/odometry`を`T_odom_imu0`としてそのまま評価してください。`/visual_slam/tracking/slam_path`や`/visual_slam/vis/slam_odometry`はSLAM行用に分けます。
+
 詳細は`docs/euroc_cuvslam_preparation.md`を参照してください。
 
 LDFE前処理ありで評価する場合は、別ターミナルで以下も起動します。

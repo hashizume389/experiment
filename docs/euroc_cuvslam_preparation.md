@@ -62,13 +62,15 @@ visual_slam/imu            -> /imu0
 
 If the Isaac ROS launch file has fixed Realsense topic names, update or override its remappings to the topics above. Also check that stereo mode and IMU usage are enabled in the Isaac ROS Visual SLAM configuration being launched.
 
+For the cuVSLAM paper Table 2 Stereo EuRoC Odom row, evaluate the odometry output, not the SLAM-corrected pose. Launch Visual SLAM with `base_frame:=imu0`, `rectified_images:=True`, and `enable_imu_fusion:=False`; then treat `/visual_slam/tracking/odometry` as `T_odom_imu0` / `T_world_body` without inversion. Keep `/visual_slam/tracking/slam_path` and `/visual_slam/vis/slam_odometry` for a separate SLAM-row evaluation.
+
 Playback:
 
 ```bash
 ros2 bag play ~/experiment/MH_01_easy_ros2_rectified_restamped --clock
 ```
 
-Then record/evaluate `/visual_slam/tracking/odometry` with `mh01_eval_logger` and `mh01_metrics`.
+Then record/evaluate `/visual_slam/tracking/odometry` with `mh01_eval_logger` and `mh01_metrics`. For paper-style orientation metrics, pass EuRoC `mav0/state_groundtruth_estimate0/data.csv` as `ground_truth_csv`; the Leica position CSV is position-only and cannot reproduce the paper's rotation error.
 
 ## Optional LDFE Image Preprocessing
 
